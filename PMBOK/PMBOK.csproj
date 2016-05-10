@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,9 +33,92 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Processes.cs" />
+    <Compile Include="Processes\AcceptedDeliverables.cs" />
+    <Compile Include="Processes\ActivityAttributes.cs" />
+    <Compile Include="Processes\ActivityCostEstimates.cs" />
+    <Compile Include="Processes\ActivityDurationEstimates.cs" />
+    <Compile Include="Processes\ActivityList.cs" />
+    <Compile Include="Processes\ActivityResourceRequirements.cs" />
+    <Compile Include="Processes\Agreements.cs" />
+    <Compile Include="Processes\ApprovedChangeRequests.cs" />
+    <Compile Include="Processes\BasisOfEstimates.cs" />
+    <Compile Include="Processes\BusinessCase.cs" />
+    <Compile Include="Processes\ChangeLog.cs" />
+    <Compile Include="Processes\ChangeRequests.cs" />
+    <Compile Include="Processes\ClosedProcurements.cs" />
+    <Compile Include="Processes\CommunicationsManagementPlan.cs" />
+    <Compile Include="Processes\CostBaseline.cs" />
+    <Compile Include="Processes\CostForecasts.cs" />
+    <Compile Include="Processes\CostManagementPlan.cs" />
+    <Compile Include="Processes\Deliverables.cs" />
+    <Compile Include="Processes\EnterpriseEnvironmentalFactorsUpdates.cs" />
+    <Compile Include="Processes\FinalProductServiceOrResultTransition.cs" />
+    <Compile Include="Processes\HumanResourceManagementPlan.cs" />
+    <Compile Include="Processes\IssueLog.cs" />
+    <Compile Include="Processes\MakeOrBuyDecisions.cs" />
+    <Compile Include="Processes\MilestoneList.cs" />
+    <Compile Include="Processes\OrganizationalProcessAssets.cs" />
+    <Compile Include="Processes\OrganizationalProcessAssetsUpdates.cs" />
+    <Compile Include="Processes\OutputsFromOtherProcesses.cs" />
+    <Compile Include="Processes\ProcessImprovementPlan.cs" />
+    <Compile Include="Processes\ProcurementDocuments.cs" />
+    <Compile Include="Processes\ProcurementManagementPlan.cs" />
+    <Compile Include="Processes\ProcurementStatementOfWork.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Processes\ProjectCalendars.cs" />
+    <Compile Include="Processes\ProjectCharter.cs" />
+    <Compile Include="Processes\ProjectCommunications.cs" />
+    <Compile Include="Processes\ProjectDocuments.cs" />
+    <Compile Include="Processes\ProjectDocumentsUpdates.cs" />
+    <Compile Include="Processes\ProjectFundingRequirements.cs" />
+    <Compile Include="Processes\ProjectManagementPlan.cs" />
+    <Compile Include="Processes\ProjectManagementPlanUpdates.cs" />
+    <Compile Include="Processes\ProjectSchedule.cs" />
+    <Compile Include="Processes\ProjectScheduleNetworkDiagrams.cs" />
+    <Compile Include="Processes\ProjectScopeStatement.cs" />
+    <Compile Include="Processes\ProjectStaffAssignments.cs" />
+    <Compile Include="Processes\ProjectStatementOfWork.cs" />
+    <Compile Include="ProjectManagement\ProgrammingProjectManagement.cs" />
+    <Compile Include="ProjectManagement\ProjectManagement.cs" />
+    <Compile Include="ProjectManagement\ProjectManagementClosing.cs" />
+    <Compile Include="ProjectManagement\ProjectManagementExecuting.cs" />
+    <Compile Include="ProjectManagement\ProjectManagementInitiating.cs" />
+    <Compile Include="ProjectManagement\ProjectManagementMonitoringAndControlling.cs" />
+    <Compile Include="ProjectManagement\ProjectManagementPlanning.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Processes\EnterpriseEnvironmentalFactors.cs" />
+    <Compile Include="Processes\QualityChecklists.cs" />
+    <Compile Include="Processes\QualityControlMeasurements.cs" />
+    <Compile Include="Processes\QualityManagementPlan.cs" />
+    <Compile Include="Processes\QualityMetrics.cs" />
+    <Compile Include="Processes\RequirementsDocumentation.cs" />
+    <Compile Include="Processes\RequirementsManagementPlan.cs" />
+    <Compile Include="Processes\RequirementsTraceabilityMatrix.cs" />
+    <Compile Include="Processes\ResourceBreakdownStructure.cs" />
+    <Compile Include="Processes\ResourceCalendar.cs" />
+    <Compile Include="Processes\ResourceCalendars.cs" />
+    <Compile Include="Processes\RiskManagementPlan.cs" />
+    <Compile Include="Processes\RiskRegister.cs" />
+    <Compile Include="Processes\ScheduleBaseline.cs" />
+    <Compile Include="Processes\ScheduleData.cs" />
+    <Compile Include="Processes\ScheduleForecasts.cs" />
+    <Compile Include="Processes\ScheduleManagementPlan.cs" />
+    <Compile Include="Processes\ScopeBaseline.cs" />
+    <Compile Include="Processes\ScopeManagementPlan.cs" />
+    <Compile Include="Processes\SelectedSellers.cs" />
+    <Compile Include="Processes\SellerProposals.cs" />
+    <Compile Include="Processes\SourceSelectionCriteria.cs" />
+    <Compile Include="Processes\StakeholderManagementPlan.cs" />
+    <Compile Include="Processes\StakeholderRegister.cs" />
+    <Compile Include="Processes\TeamPerformanceAssessments.cs" />
+    <Compile Include="Processes\ValidatedChanges.cs" />
+    <Compile Include="Processes\VerifiedDeliverables.cs" />
+    <Compile Include="Processes\WorkPerformanceData.cs" />
+    <Compile Include="Processes\WorkPerformanceInformation.cs" />
+    <Compile Include="Processes\WorkPerformanceReports.cs" />
+    <Compile Include="ProjectManagement\TestProjectManagement.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
