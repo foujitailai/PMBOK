@@ -34,19 +34,28 @@
 			this.SequenceActivities(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_MilestoneList, this.pm.m_ProjectScopeStatement, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.EstimateActivityResources(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_ResourceCalendars, this.pm.m_RiskRegister, this.pm.m_ActivityCostEstimates, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.EstimateActivityDurations(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_ActivityResourceRequirements, this.pm.m_ResourceCalendars, this.pm.m_ProjectScopeStatement, this.pm.m_RiskRegister, this.pm.m_ResourceBreakdownStructure, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			// important, the activities are planed.
 			this.DevelopSchedule(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_ProjectScheduleNetworkDiagrams, this.pm.m_ActivityResourceRequirements, this.pm.m_ResourceCalendars, this.pm.m_ActivityDurationEstimates, this.pm.m_ProjectScopeStatement, this.pm.m_RiskRegister, this.pm.m_ProjectStaffAssignments, this.pm.m_ResourceBreakdownStructure, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+
 			this.PlanCostManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectCharter, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.EstimateCosts(this.pm.m_CostManagementPlan, this.pm.m_HumanResourceManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_ProjectSchedule, this.pm.m_RiskRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			// cost are planed
 			this.DetermineBudget(this.pm.m_CostManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_ActivityCostEstimates, this.pm.m_BasisOfEstimates, this.pm.m_ProjectSchedule, this.pm.m_ResourceCalendars, this.pm.m_RiskRegister, this.pm.m_Agreements, this.pm.m_OrganizationalProcessAssets);
+
 			this.PlanQualityManagement(this.pm.m_ProjectManagementPlan, this.pm.m_StakeholderRegister, this.pm.m_RiskRegister, this.pm.m_RequirementsDocumentation, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+
 			this.PlanHumanResourceManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ActivityResourceRequirements, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+
 			this.PlanCommunicationsManagement(this.pm.m_ProjectManagementPlan, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+
 			this.PlanRiskManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectCharter, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.IdentifyRisks(this.pm.m_RiskManagementPlan, this.pm.m_CostManagementPlan, this.pm.m_ScheduleManagementPlan, this.pm.m_QualityManagementPlan, this.pm.m_HumanResourceManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_ActivityCostEstimates, this.pm.m_ActivityDurationEstimates, this.pm.m_StakeholderRegister, this.pm.m_ProjectDocuments, this.pm.m_ProcurementDocuments, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PerformQualitativeRiskAnalysis(this.pm.m_RiskManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_RiskRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PerformQuantitativeRiskAnalysis(this.pm.m_RiskManagementPlan, this.pm.m_CostManagementPlan, this.pm.m_ScheduleManagementPlan, this.pm.m_RiskRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PlanRiskResponses(this.pm.m_RiskManagementPlan, this.pm.m_RiskRegister);
+
 			this.PlanProcurementManagement(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RiskRegister, this.pm.m_ActivityResourceRequirements, this.pm.m_ProjectSchedule, this.pm.m_ActivityCostEstimates, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+
 			this.PlanStakeholderManagement(this.pm.m_ProjectManagementPlan, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 		}
 

@@ -1,1 +1,30 @@
-﻿<Properties StartupItem="PMBOK/PMBOK.csproj" />
+﻿<Properties StartupItem="PMBOK/PMBOK.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="PMBOK/Program.cs">
+    <Files>
+      <File FileName="PMBOK/Program.cs" Line="1016" Column="43" />
+      <File FileName="PMBOK/Processes.cs" Line="11" Column="22" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PMBOK" expanded="True">
+            <Node name="PMBOK" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="126" column="1" />
+      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="529" column="1" />
+      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="719" column="1" />
+      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="1000" column="1" />
+      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="96" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
