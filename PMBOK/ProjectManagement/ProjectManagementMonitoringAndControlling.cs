@@ -25,77 +25,18 @@ namespace PMBOK
 		public virtual void Run()
 		{
 			Console.WriteLine("> > > MonitoringAndControlling...");
-			this.MonitorAndControlProjectWork(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_ScheduleForecasts,
-				this.pm.m_CostForecasts,
-				this.pm.m_ValidatedChanges,
-				this.pm.m_WorkPerformanceInformation,
-				this.pm.m_EnterpriseEnvironmentalFactors,
-				this.pm.m_OrganizationalProcessAssets);
-			this.PerformIntegratedChangeControl(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_WorkPerformanceReports,
-				this.pm.m_ChangeRequests,
-				this.pm.m_EnterpriseEnvironmentalFactors,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ValidateScope(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_RequirementsDocumentation,
-				this.pm.m_RequirementsTraceabilityMatrix,
-				this.pm.m_VerifiedDeliverables,
-				this.pm.m_WorkPerformanceData);
-			this.ControlScope(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_RequirementsDocumentation,
-				this.pm.m_RequirementsTraceabilityMatrix,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ControlSchedule(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_ProjectSchedule,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_ProjectCalendars,
-				this.pm.m_ScheduleData,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ControlCosts(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_ProjectFundingRequirements,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ControlQuality(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_QualityMetrics,
-				this.pm.m_QualityChecklists,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_ApprovedChangeRequests,
-				this.pm.m_Deliverables,
-				this.pm.m_ProjectDocuments,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ControlCommunications(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_ProjectCommunications,
-				this.pm.m_IssueLog,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ControlRisks(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_RiskRegister,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_WorkPerformanceReports);
-			this.ControlProcurements(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_ProcurementDocuments,
-				this.pm.m_Agreements,
-				this.pm.m_ApprovedChangeRequests,
-				this.pm.m_WorkPerformanceReports,
-				this.pm.m_WorkPerformanceData);
-			this.ControlStakeholderEngagement(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_IssueLog,
-				this.pm.m_WorkPerformanceData,
-				this.pm.m_ProjectDocuments);
 
+			this.MonitorAndControlProjectWork(this.pm.m_ProjectManagementPlan, this.pm.m_ScheduleForecasts, this.pm.m_CostForecasts, this.pm.m_ValidatedChanges, this.pm.m_WorkPerformanceInformation, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			this.PerformIntegratedChangeControl(this.pm.m_ProjectManagementPlan, this.pm.m_WorkPerformanceReports, this.pm.m_ChangeRequests, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			this.ValidateScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_VerifiedDeliverables, this.pm.m_WorkPerformanceData);
+			this.ControlScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_WorkPerformanceData, this.pm.m_OrganizationalProcessAssets);
+			this.ControlSchedule(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectSchedule, this.pm.m_WorkPerformanceData, this.pm.m_ProjectCalendars, this.pm.m_ScheduleData, this.pm.m_OrganizationalProcessAssets);
+			this.ControlCosts(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectFundingRequirements, this.pm.m_WorkPerformanceData, this.pm.m_OrganizationalProcessAssets);
+			this.ControlQuality(this.pm.m_ProjectManagementPlan, this.pm.m_QualityMetrics, this.pm.m_QualityChecklists, this.pm.m_WorkPerformanceData, this.pm.m_ApprovedChangeRequests, this.pm.m_Deliverables, this.pm.m_ProjectDocuments, this.pm.m_OrganizationalProcessAssets);
+			this.ControlCommunications(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectCommunications, this.pm.m_IssueLog, this.pm.m_WorkPerformanceData, this.pm.m_OrganizationalProcessAssets);
+			this.ControlRisks(this.pm.m_ProjectManagementPlan, this.pm.m_RiskRegister, this.pm.m_WorkPerformanceData, this.pm.m_WorkPerformanceReports);
+			this.ControlProcurements(this.pm.m_ProjectManagementPlan, this.pm.m_ProcurementDocuments, this.pm.m_Agreements, this.pm.m_ApprovedChangeRequests, this.pm.m_WorkPerformanceReports, this.pm.m_WorkPerformanceData);
+			this.ControlStakeholderEngagement(this.pm.m_ProjectManagementPlan, this.pm.m_IssueLog, this.pm.m_WorkPerformanceData, this.pm.m_ProjectDocuments);
 		}
 
 		class MonitorAndControlProjectWorkResult

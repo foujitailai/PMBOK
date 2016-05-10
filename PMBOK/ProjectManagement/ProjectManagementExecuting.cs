@@ -24,52 +24,15 @@ namespace PMBOK
 		public virtual void Run()
 		{
 			Console.WriteLine("> > > Executing...");
-			this.DirectAndManageProjectWork(
-				this.pm.m_ProjectManagementPlan,
-				this.pm.m_ApprovedChangeRequests,
-				this.pm.m_EnterpriseEnvironmentalFactors,
-				this.pm.m_OrganizationalProcessAssets);
-			this.PerformQualityAssurance(
-				this.pm.m_QualityManagementPlan,
-				this.pm.m_ProcessImprovementPlan,
-				this.pm.m_QualityMetrics,
-				this.pm.m_QualityControlMeasurements,
-				this.pm.m_ProjectDocuments);
-			this.AcquireProjectTeam(
-				this.pm.m_HumanResourceManagementPlan,
-				this.pm.m_EnterpriseEnvironmentalFactors,
-				this.pm.m_OrganizationalProcessAssets);
-			this.DevelopProjectTeam(
-				this.pm.m_HumanResourceManagementPlan,
-				this.pm.m_ProjectStaffAssignments,
-				this.pm.m_ResourceCalendars);
-			this.ManageProjectTeam(
-				this.pm.m_HumanResourceManagementPlan,
-				this.pm.m_ProjectStaffAssignments,
-				this.pm.m_TeamPerformanceAssessments,
-				this.pm.m_IssueLog,
-				this.pm.m_WorkPerformanceReports,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ManageCommunications(
-				this.pm.m_CommunicationsManagementPlan,
-				this.pm.m_WorkPerformanceReports,
-				this.pm.m_EnterpriseEnvironmentalFactors,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ConductProcurements(
-				this.pm.m_ProcurementManagementPlan,
-				this.pm.m_ProcurementDocuments,
-				this.pm.m_SourceSelectionCriteria,
-				this.pm.m_SellerProposals,
-				this.pm.m_ProjectDocuments,
-				this.pm.m_MakeOrBuyDecisions,
-				this.pm.m_ProcurementStatementOfWork,
-				this.pm.m_OrganizationalProcessAssets);
-			this.ManageStakeholderEngagement(
-				this.pm.m_StakeholderManagementPlan,
-				this.pm.m_CommunicationsManagementPlan,
-				this.pm.m_ChangeLog,
-				this.pm.m_OrganizationalProcessAssets);
 
+			this.DirectAndManageProjectWork(this.pm.m_ProjectManagementPlan, this.pm.m_ApprovedChangeRequests, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			this.PerformQualityAssurance(this.pm.m_QualityManagementPlan, this.pm.m_ProcessImprovementPlan, this.pm.m_QualityMetrics, this.pm.m_QualityControlMeasurements, this.pm.m_ProjectDocuments);
+			this.AcquireProjectTeam(this.pm.m_HumanResourceManagementPlan, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			this.DevelopProjectTeam(this.pm.m_HumanResourceManagementPlan, this.pm.m_ProjectStaffAssignments, this.pm.m_ResourceCalendars);
+			this.ManageProjectTeam(this.pm.m_HumanResourceManagementPlan, this.pm.m_ProjectStaffAssignments, this.pm.m_TeamPerformanceAssessments, this.pm.m_IssueLog, this.pm.m_WorkPerformanceReports, this.pm.m_OrganizationalProcessAssets);
+			this.ManageCommunications(this.pm.m_CommunicationsManagementPlan, this.pm.m_WorkPerformanceReports, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			this.ConductProcurements(this.pm.m_ProcurementManagementPlan, this.pm.m_ProcurementDocuments, this.pm.m_SourceSelectionCriteria, this.pm.m_SellerProposals, this.pm.m_ProjectDocuments, this.pm.m_MakeOrBuyDecisions, this.pm.m_ProcurementStatementOfWork, this.pm.m_OrganizationalProcessAssets);
+			this.ManageStakeholderEngagement(this.pm.m_StakeholderManagementPlan, this.pm.m_CommunicationsManagementPlan, this.pm.m_ChangeLog, this.pm.m_OrganizationalProcessAssets);
 		}
 
 		class DirectAndManageProjectWorkResult
