@@ -33,6 +33,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JustTest.cs" />
     <Compile Include="Processes.cs" />
     <Compile Include="Processes\AcceptedDeliverables.cs" />
     <Compile Include="Processes\ActivityAttributes.cs" />

@@ -1,6 +1,7 @@
 ﻿namespace PMBOK
 {
 	using System;
+	using System.Diagnostics;
 
 	using PMBOK.Processes;
 
@@ -35,6 +36,11 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(psow != null);
+			Debugger.Assert(bc != null);
+			Debugger.Assert(a != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new ProjectCharter();
 		}
 
@@ -44,6 +50,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pc != null);
+			Debugger.Assert(pd != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new StakeholderRegister();
 		}
 	}

@@ -2,6 +2,7 @@
 namespace PMBOK
 {
 	using System;
+	using System.Diagnostics;
 
 	using PMBOK.Processes;
 
@@ -39,6 +40,9 @@ namespace PMBOK
 			AcceptedDeliverables ad,
 			OrganizationalProcessAssets op)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(ad != null);
+			Debugger.Assert(op != null);
 			return new CloseProjectOrPhaseResult();
 		}
 
@@ -51,6 +55,8 @@ namespace PMBOK
 			ProjectManagementPlan pmp,
 			ProcurementDocuments pd)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pd != null);
 			return new CloseProcurementsResult();
 		}
 

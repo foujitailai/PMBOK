@@ -2,6 +2,7 @@
 namespace PMBOK
 {
 	using System;
+	using System.Diagnostics;
 
 	using PMBOK.Processes;
 
@@ -49,6 +50,10 @@ namespace PMBOK
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(cr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new DirectAndManageProjectWorkResult();
 		}
 
@@ -66,6 +71,11 @@ namespace PMBOK
 			QualityControlMeasurements qcm,
 			ProjectDocuments pd)
 		{
+			Debugger.Assert(qmp != null);
+			Debugger.Assert(pip != null);
+			Debugger.Assert(qm != null);
+			Debugger.Assert(qcm != null);
+			Debugger.Assert(pd != null);
 			return new PerformQualityAssuranceResult();
 		}
 
@@ -80,6 +90,9 @@ namespace PMBOK
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(hrmp != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new AcquireProjectTeamResult();
 		}
 
@@ -93,6 +106,9 @@ namespace PMBOK
 			ProjectStaffAssignments psa,
 			ResourceCalendars rc)
 		{
+			Debugger.Assert(hrmp != null);
+			Debugger.Assert(psa != null);
+			Debugger.Assert(rc != null);
 			return new DevelopProjectTeamResult();
 		}
 
@@ -112,6 +128,12 @@ namespace PMBOK
 			WorkPerformanceReports wpr,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(hrmp != null);
+			Debugger.Assert(psa != null);
+			Debugger.Assert(tpa != null);
+			Debugger.Assert(il != null);
+			Debugger.Assert(wpr != null);
+			Debugger.Assert(opa != null);
 			return new ManageProjectTeamResult();
 		}
 
@@ -128,6 +150,10 @@ namespace PMBOK
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(cmp != null);
+			Debugger.Assert(wpr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new ManageCommunicationsResult();
 		}
 
@@ -150,6 +176,14 @@ namespace PMBOK
 			ProcurementStatementOfWork psow,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pd != null);
+			Debugger.Assert(ssc != null);
+			Debugger.Assert(sp != null);
+			Debugger.Assert(pjd != null);
+			Debugger.Assert(mobd != null);
+			Debugger.Assert(psow != null);
+			Debugger.Assert(opa != null);
 			return new ConductProcurementsResult();
 		}
 
@@ -167,8 +201,12 @@ namespace PMBOK
 			ChangeLog cl,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(cmp != null);
+			Debugger.Assert(cl != null);
+			Debugger.Assert(opa != null);
 			return new ManageStakeholderEngagementResult();
 		}
- 
+
 	}
 }

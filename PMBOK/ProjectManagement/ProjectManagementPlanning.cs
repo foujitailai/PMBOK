@@ -1,6 +1,8 @@
 ﻿namespace PMBOK
 {
 	using System;
+	using System.Diagnostics;
+	using System.Reflection;
 
 	using PMBOK.Processes;
 
@@ -24,6 +26,7 @@
 		{
 			Console.WriteLine("> > > Planning...");
 
+			// ========== SCOPE ==========
 			this.DevelopProjectManagementPlan(this.pm.m_ProjectCharter, this.pm.m_OutputsFromOtherProcesses, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PlanScopeManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectCharter, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.CollectRequirements(this.pm.m_ScopeManagementPlan, this.pm.m_RequirementsManagementPlan, this.pm.m_StakeholderManagementPlan, this.pm.m_ProjectCharter, this.pm.m_StakeholderRegister);
@@ -33,29 +36,37 @@
 			this.DefineActivities(this.pm.m_ScheduleManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.SequenceActivities(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_MilestoneList, this.pm.m_ProjectScopeStatement, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.EstimateActivityResources(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_ResourceCalendars, this.pm.m_RiskRegister, this.pm.m_ActivityCostEstimates, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			// TIME
 			this.EstimateActivityDurations(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_ActivityResourceRequirements, this.pm.m_ResourceCalendars, this.pm.m_ProjectScopeStatement, this.pm.m_RiskRegister, this.pm.m_ResourceBreakdownStructure, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			// important, the activities are planed.
 			this.DevelopSchedule(this.pm.m_ScheduleManagementPlan, this.pm.m_ActivityList, this.pm.m_ActivityAttributes, this.pm.m_ProjectScheduleNetworkDiagrams, this.pm.m_ActivityResourceRequirements, this.pm.m_ResourceCalendars, this.pm.m_ActivityDurationEstimates, this.pm.m_ProjectScopeStatement, this.pm.m_RiskRegister, this.pm.m_ProjectStaffAssignments, this.pm.m_ResourceBreakdownStructure, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 
+			// ========== COST ========
 			this.PlanCostManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectCharter, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.EstimateCosts(this.pm.m_CostManagementPlan, this.pm.m_HumanResourceManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_ProjectSchedule, this.pm.m_RiskRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			// cost are planed
 			this.DetermineBudget(this.pm.m_CostManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_ActivityCostEstimates, this.pm.m_BasisOfEstimates, this.pm.m_ProjectSchedule, this.pm.m_ResourceCalendars, this.pm.m_RiskRegister, this.pm.m_Agreements, this.pm.m_OrganizationalProcessAssets);
 
+			// ========== QUALITY ===========
 			this.PlanQualityManagement(this.pm.m_ProjectManagementPlan, this.pm.m_StakeholderRegister, this.pm.m_RiskRegister, this.pm.m_RequirementsDocumentation, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 
+			// ========== HUMAN RESOURCE =======
 			this.PlanHumanResourceManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ActivityResourceRequirements, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 
+			// ========== COMMUNICATION =======
 			this.PlanCommunicationsManagement(this.pm.m_ProjectManagementPlan, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 
+			// ========== RISK ========
 			this.PlanRiskManagement(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectCharter, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.IdentifyRisks(this.pm.m_RiskManagementPlan, this.pm.m_CostManagementPlan, this.pm.m_ScheduleManagementPlan, this.pm.m_QualityManagementPlan, this.pm.m_HumanResourceManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_ActivityCostEstimates, this.pm.m_ActivityDurationEstimates, this.pm.m_StakeholderRegister, this.pm.m_ProjectDocuments, this.pm.m_ProcurementDocuments, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PerformQualitativeRiskAnalysis(this.pm.m_RiskManagementPlan, this.pm.m_ScopeBaseline, this.pm.m_RiskRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PerformQuantitativeRiskAnalysis(this.pm.m_RiskManagementPlan, this.pm.m_CostManagementPlan, this.pm.m_ScheduleManagementPlan, this.pm.m_RiskRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PlanRiskResponses(this.pm.m_RiskManagementPlan, this.pm.m_RiskRegister);
 
+			// ========== PROCUREMENT ======
 			this.PlanProcurementManagement(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RiskRegister, this.pm.m_ActivityResourceRequirements, this.pm.m_ProjectSchedule, this.pm.m_ActivityCostEstimates, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 
+			// ========== STAKEHOLDER ======
 			this.PlanStakeholderManagement(this.pm.m_ProjectManagementPlan, this.pm.m_StakeholderRegister, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 		}
 
@@ -71,10 +82,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
-			if (pc == null) Console.WriteLine("ProjectCharter is invalid");
-			if (ofop == null) Console.WriteLine("OutputsFromOtherProcesses is invalid");
-			if (eef == null) Console.WriteLine("EnterpriseEnvironmentalFactors is invalid");
-			if (opa == null) Console.WriteLine("OrganizationalProcessAssets is invalid");
+			Debugger.Assert(pc != null);
+			Debugger.Assert(ofop != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new ProjectManagementPlan();
 		}
 
@@ -89,6 +100,11 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets op)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(op != null);
+
 			return new PlanScopeManagementResult();
 		}
 
@@ -104,6 +120,11 @@
 			ProjectCharter pc,
 			StakeholderRegister sr)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(rmp != null);
+			Debugger.Assert(shmp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(sr != null);
 			return new CollectRequirementsResult();
 		}
 
@@ -118,6 +139,10 @@
 			RequirementsDocumentation rd,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(rd != null);
+			Debugger.Assert(opa != null);
 			return new DefineScopeResult();
 		}
 
@@ -133,6 +158,11 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(pss != null);
+			Debugger.Assert(rd != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new CreateWBSResult();
 		}
 
@@ -142,6 +172,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new ScheduleManagementPlan();
 		}
 
@@ -157,6 +191,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(sb != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new DefineActivitiesResult();
 		}
 
@@ -174,6 +212,13 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(al != null);
+			Debugger.Assert(aa != null);
+			Debugger.Assert(ml != null);
+			Debugger.Assert(pss != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new SequenceActivitiesResult();
 		}
 
@@ -193,6 +238,14 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(al != null);
+			Debugger.Assert(aa != null);
+			Debugger.Assert(rc != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(ace != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new EstimateActivityResourcesResult();
 		}
 
@@ -213,6 +266,23 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			// RiskRegister，当前函数（EstimateActivityDurations）引用了这个文档，
+			//  但是这个文档的生成函数（IdentifyRisks），又引用了当前函数（EstimateActivityDurations）生成的ActivityDurationEstimates，
+			//  形成了逻辑死锁状态，无法达成目标，How can I do it?
+
+
+			Debugger.Assert(smp != null);
+			Debugger.Assert(al != null);
+			Debugger.Assert(aa != null);
+			Debugger.Assert(arr != null);
+			Debugger.Assert(rc != null);
+			Debugger.Assert(pss != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(rbs != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
+
+
 			return new EstimateActivityDurationsResult();
 		}
 
@@ -240,6 +310,19 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(smp != null);
+			Debugger.Assert(al != null);
+			Debugger.Assert(aa != null);
+			Debugger.Assert(psnd != null);
+			Debugger.Assert(arr != null);
+			Debugger.Assert(rc != null);
+			Debugger.Assert(ade != null);
+			Debugger.Assert(pss != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(psa != null);
+			Debugger.Assert(rbs != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new DevelopScheduleResult();
 		}
 
@@ -249,6 +332,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new CostManagementPlan();
 		}
 
@@ -267,6 +354,13 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(cmp != null);
+			Debugger.Assert(hrmp != null);
+			Debugger.Assert(sb != null);
+			Debugger.Assert(ps != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new EstimateCostsResult();
 		}
 
@@ -287,6 +381,15 @@
 			Agreements a,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(cmp != null);
+			Debugger.Assert(sb != null);
+			Debugger.Assert(ace != null);
+			Debugger.Assert(boe != null);
+			Debugger.Assert(ps != null);
+			Debugger.Assert(rc != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(a != null);
+			Debugger.Assert(opa != null);
 			return new DetermineBudgetResult();
 		}
 
@@ -306,6 +409,12 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(sr != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(rd != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new PlanQualityManagementResult();
 		}
 
@@ -315,6 +424,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(arr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new HumanResourceManagementPlan();
 		}
 
@@ -329,6 +442,10 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(sr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new PlanCommunicationsManagementResult();
 		}
 
@@ -339,6 +456,11 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(sr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new RiskManagementPlan();
 		}
 
@@ -357,6 +479,19 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(rmp != null);
+			Debugger.Assert(cmp != null);
+			Debugger.Assert(smp != null);
+			Debugger.Assert(qmp != null);
+			Debugger.Assert(hrmp != null);
+			Debugger.Assert(sb != null);
+			Debugger.Assert(ace != null);
+			Debugger.Assert(ade != null);
+			Debugger.Assert(sr != null);
+			Debugger.Assert(pjd != null);
+			Debugger.Assert(pd != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new RiskRegister();
 		}
 
@@ -367,6 +502,11 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(rmp != null);
+			Debugger.Assert(sb != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new ProjectDocumentsUpdates();
 		}
 
@@ -378,6 +518,12 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(rmp != null);
+			Debugger.Assert(cmp != null);
+			Debugger.Assert(smp != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new ProjectDocumentsUpdates();
 		}
 
@@ -390,6 +536,8 @@
 			RiskManagementPlan rmp,
 			RiskRegister rr)
 		{
+			Debugger.Assert(rmp != null);
+			Debugger.Assert(rr != null);
 			return new PlanRiskResponsesResult();
 		}
 
@@ -414,6 +562,15 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(rd != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(arr != null);
+			Debugger.Assert(ps != null);
+			Debugger.Assert(ace != null);
+			Debugger.Assert(sr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new PlanProcurementManagementResult();
 		}
 
@@ -428,8 +585,12 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(sr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new PlanStakeholderManagementResult();
 		}
- 
+
 	}
 }

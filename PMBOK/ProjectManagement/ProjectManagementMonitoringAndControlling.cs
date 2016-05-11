@@ -3,6 +3,7 @@
 namespace PMBOK
 {
 	using System;
+	using System.Diagnostics;
 
 	using PMBOK.Processes;
 
@@ -55,6 +56,13 @@ namespace PMBOK
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(sf != null);
+			Debugger.Assert(cf != null);
+			Debugger.Assert(vc != null);
+			Debugger.Assert(wpi != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new MonitorAndControlProjectWorkResult();
 		}
 
@@ -72,6 +80,11 @@ namespace PMBOK
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(wpr != null);
+			Debugger.Assert(cr != null);
+			Debugger.Assert(eef != null);
+			Debugger.Assert(opa != null);
 			return new PerformIntegratedChangeControlResult();
 		}
 
@@ -89,6 +102,11 @@ namespace PMBOK
 			VerifiedDeliverables d,
 			WorkPerformanceData wpd)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(rd != null);
+			Debugger.Assert(rtm != null);
+			Debugger.Assert(d != null);
+			Debugger.Assert(wpd != null);
 			return new ValidateScopeResult();
 		}
 
@@ -107,6 +125,11 @@ namespace PMBOK
 			WorkPerformanceData wpd,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(rd != null);
+			Debugger.Assert(rtm != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(opa != null);
 			return new ControlScopeResult();
 		}
 
@@ -127,6 +150,12 @@ namespace PMBOK
 			ScheduleData sd,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(ps != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(sd != null);
+			Debugger.Assert(opa != null);
 			return new ControlScheduleResult();
 		}
 
@@ -145,6 +174,10 @@ namespace PMBOK
 			WorkPerformanceData wpd,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pfr != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(opa != null);
 			return new ControlCostsResult();
 		}
 
@@ -169,6 +202,14 @@ namespace PMBOK
 			ProjectDocuments pjd,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(qm != null);
+			Debugger.Assert(qc != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(cr != null);
+			Debugger.Assert(d != null);
+			Debugger.Assert(pjd != null);
+			Debugger.Assert(opa != null);
 			return new ControlQualityResult();
 		}
 
@@ -187,6 +228,11 @@ namespace PMBOK
 			WorkPerformanceData wpd,
 			OrganizationalProcessAssets opa)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pc != null);
+			Debugger.Assert(il != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(opa != null);
 			return new ControlCommunicationsResult();
 		}
 
@@ -204,6 +250,10 @@ namespace PMBOK
 			WorkPerformanceData wpd,
 			WorkPerformanceReports wpr)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(rr != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(wpr != null);
 			return new ControlRisksResult();
 		}
 
@@ -223,6 +273,12 @@ namespace PMBOK
 			WorkPerformanceReports wpr,
 			WorkPerformanceData wpd)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(pd != null);
+			Debugger.Assert(a != null);
+			Debugger.Assert(cr != null);
+			Debugger.Assert(wpr != null);
+			Debugger.Assert(wpd != null);
 			return new ControlProcurementsResult();
 		}
 
@@ -240,8 +296,12 @@ namespace PMBOK
 			WorkPerformanceData wpd,
 			ProjectDocuments pd)
 		{
+			Debugger.Assert(pmp != null);
+			Debugger.Assert(il != null);
+			Debugger.Assert(wpd != null);
+			Debugger.Assert(pd != null);
 			return new ControlStakeholderEngagementResult();
 		}
- 
+
 	}
 }
