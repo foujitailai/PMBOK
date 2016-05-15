@@ -27,9 +27,15 @@ namespace PMBOK
 		{
 			Console.WriteLine("> > > MonitoringAndControlling...");
 
+			// 监控的过程就是 找问题 的过程
+			// 监控是一个比较容易理解的过程，将当前执行过程中产生的结果输入到监控系统，监控系统用各种方法进行分析，得到结果是否需要调整
+
 			this.MonitorAndControlProjectWork(this.pm.m_ProjectManagementPlan, this.pm.m_ScheduleForecasts, this.pm.m_CostForecasts, this.pm.m_ValidatedChanges, this.pm.m_WorkPerformanceInformation, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PerformIntegratedChangeControl(this.pm.m_ProjectManagementPlan, this.pm.m_WorkPerformanceReports, this.pm.m_ChangeRequests, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
+			// 这步不应该在这里，应该是本过程组最后一个步骤
 			this.ValidateScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_VerifiedDeliverables, this.pm.m_WorkPerformanceData);
+			// 控制的过程中都要使用WORK PERFORMANCE DATA，根据PERFORMANCE来决定是否要调整相关事务
+			// 从不同的角度（知识领域）出发，对相关数据进行检查
 			this.ControlScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_WorkPerformanceData, this.pm.m_OrganizationalProcessAssets);
 			this.ControlSchedule(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectSchedule, this.pm.m_WorkPerformanceData, this.pm.m_ProjectCalendars, this.pm.m_ScheduleData, this.pm.m_OrganizationalProcessAssets);
 			this.ControlCosts(this.pm.m_ProjectManagementPlan, this.pm.m_ProjectFundingRequirements, this.pm.m_WorkPerformanceData, this.pm.m_OrganizationalProcessAssets);
@@ -90,7 +96,7 @@ namespace PMBOK
 
 		class ValidateScopeResult
 		{
-			AcceptedDeliverables d;
+			AcceptedDeliverables ad;
 			ChangeRequests cr;
 			WorkPerformanceInformation wpi;
 			ProjectDocumentsUpdates pdu;
@@ -99,13 +105,14 @@ namespace PMBOK
 			ProjectManagementPlan pmp,
 			RequirementsDocumentation rd,
 			RequirementsTraceabilityMatrix rtm,
-			VerifiedDeliverables d,
+			VerifiedDeliverables vd,
 			WorkPerformanceData wpd)
 		{
+			// 通过 计划、需求、结果、过程   得出 可以接受的可交付的成果
 			Debugger.Assert(pmp != null);
 			Debugger.Assert(rd != null);
 			Debugger.Assert(rtm != null);
-			Debugger.Assert(d != null);
+			Debugger.Assert(vd != null);
 			Debugger.Assert(wpd != null);
 			return new ValidateScopeResult();
 		}

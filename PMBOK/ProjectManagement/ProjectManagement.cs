@@ -118,6 +118,7 @@ namespace PMBOK
 
 		public void Processing()
 		{
+			// todo: adding TOOLS in each function
 			this.Initiating();
 			this.Planning();
 			this.Executing();
