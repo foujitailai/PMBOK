@@ -32,8 +32,7 @@ namespace PMBOK
 
 			this.MonitorAndControlProjectWork(this.pm.m_ProjectManagementPlan, this.pm.m_ScheduleForecasts, this.pm.m_CostForecasts, this.pm.m_ValidatedChanges, this.pm.m_WorkPerformanceInformation, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
 			this.PerformIntegratedChangeControl(this.pm.m_ProjectManagementPlan, this.pm.m_WorkPerformanceReports, this.pm.m_ChangeRequests, this.pm.m_EnterpriseEnvironmentalFactors, this.pm.m_OrganizationalProcessAssets);
-			// 这步不应该在这里，应该是本过程组最后一个步骤
-			this.ValidateScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_VerifiedDeliverables, this.pm.m_WorkPerformanceData);
+			
 			// 控制的过程中都要使用WORK PERFORMANCE DATA，根据PERFORMANCE来决定是否要调整相关事务
 			// 从不同的角度（知识领域）出发，对相关数据进行检查
 			this.ControlScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_WorkPerformanceData, this.pm.m_OrganizationalProcessAssets);
@@ -44,6 +43,9 @@ namespace PMBOK
 			this.ControlRisks(this.pm.m_ProjectManagementPlan, this.pm.m_RiskRegister, this.pm.m_WorkPerformanceData, this.pm.m_WorkPerformanceReports);
 			this.ControlProcurements(this.pm.m_ProjectManagementPlan, this.pm.m_ProcurementDocuments, this.pm.m_Agreements, this.pm.m_ApprovedChangeRequests, this.pm.m_WorkPerformanceReports, this.pm.m_WorkPerformanceData);
 			this.ControlStakeholderEngagement(this.pm.m_ProjectManagementPlan, this.pm.m_IssueLog, this.pm.m_WorkPerformanceData, this.pm.m_ProjectDocuments);
+
+			// 这步不应该在这里，应该是本过程组最后一个步骤
+			this.ValidateScope(this.pm.m_ProjectManagementPlan, this.pm.m_RequirementsDocumentation, this.pm.m_RequirementsTraceabilityMatrix, this.pm.m_VerifiedDeliverables, this.pm.m_WorkPerformanceData);
 		}
 
 		class MonitorAndControlProjectWorkResult
@@ -137,6 +139,29 @@ namespace PMBOK
 			Debugger.Assert(rtm != null);
 			Debugger.Assert(wpd != null);
 			Debugger.Assert(opa != null);
+
+			// IMPORTANT!!! TOOLS
+// 			Regression analysis
+// 			Grouping methods
+// 			Causal analysis
+// 			Root cause analysis
+// 			Forecasting methods (e.g., time series, scenario building, simulation, etc.)
+// 			Failure mode and effect analysis (FMEA)
+// 			Fault tree analysis (FTA)
+// 			Reserve analysis
+// 			Trend analysis
+// 			Earned value management
+// 			Variance analysis
+
+			// Variance Analysis
+			// var variance = ScopeBaseline - WorkPerformanceData;
+			// (这需要A与B的格式是一至的，要不然无法进行比较)
+
+			// root cause analysis (RCA)
+			//  1.why? -> why? -> why? -> why? -> why?
+			//  2.fishbone diagram
+			//  http://wenku.baidu.com searching "Root Cause Analysis Process"
+
 			return new ControlScopeResult();
 		}
 
