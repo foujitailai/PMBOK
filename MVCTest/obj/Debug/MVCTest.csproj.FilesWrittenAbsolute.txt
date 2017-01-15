@@ -1,0 +1,12 @@
+/Users/ebc/Projects/PMBOK/MVCTest/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/ebc/Projects/PMBOK/MVCTest/bin/MVCTest.dll.mdb
+/Users/ebc/Projects/PMBOK/MVCTest/bin/MVCTest.dll
+/Users/ebc/Projects/PMBOK/MVCTest/obj/Debug/MVCTest.dll
+/Users/ebc/Projects/PMBOK/MVCTest/obj/Debug/MVCTest.dll.mdb
+/Users/ebc/Projects/PMBOK/MVCTest/bin/Microsoft.Web.Infrastructure.dll
+/Users/ebc/Projects/PMBOK/MVCTest/bin/System.Web.Razor.dll
+/Users/ebc/Projects/PMBOK/MVCTest/bin/System.Web.Helpers.dll
+/Users/ebc/Projects/PMBOK/MVCTest/bin/System.Web.WebPages.dll
+/Users/ebc/Projects/PMBOK/MVCTest/bin/System.Web.WebPages.Deployment.dll
+/Users/ebc/Projects/PMBOK/MVCTest/bin/System.Web.WebPages.Razor.dll
+/Users/ebc/Projects/PMBOK/MVCTest/bin/System.Web.Mvc.dll

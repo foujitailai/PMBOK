@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="PMBOK/PMBOK.csproj">
+﻿<Properties StartupItem="ConsoleTest/ConsoleTest.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="PMBOK/Program.cs">
     <Files>
