@@ -35,7 +35,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Game\Debug.cs" />
+    <Compile Include="Game\HotFix.cs" />
+    <Compile Include="Game\GameEssence.cs" />
+    <Compile Include="Game\Relationship.cs" />
+    <Compile Include="Game\Business.cs" />
+    <Compile Include="Game\GameMode.cs" />
+    <Compile Include="Game\GameConceptProcess.cs" />
+    <Compile Include="Game\Misc.cs" />
     <Compile Include="Game\GameMain.cs" />
+    <Compile Include="Game\Lobby.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

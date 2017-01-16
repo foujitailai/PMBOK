@@ -1,30 +1,13 @@
-﻿<Properties StartupItem="ConsoleTest/ConsoleTest.csproj">
+﻿<Properties StartupItem="ConsoleTest/ConsoleTest.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="PMBOK/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ConsoleTest/Game/GameMain.cs">
     <Files>
-      <File FileName="PMBOK/Program.cs" Line="1016" Column="43" />
-      <File FileName="PMBOK/Processes.cs" Line="11" Column="22" />
+      <File FileName="ConsoleTest/Program.cs" Line="13" Column="1" />
+      <File FileName="ConsoleTest/Game/GameMain.cs" Line="18" Column="2" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="PMBOK" expanded="True">
-            <Node name="PMBOK" expanded="True">
-              <Node name="Program.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="126" column="1" />
-      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="529" column="1" />
-      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="719" column="1" />
-      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="1000" column="1" />
-      <Breakpoint file="/Users/ebc/Projects/PMBOK/PMBOK/Program.cs" line="96" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
