@@ -176,6 +176,9 @@
 			Debugger.Assert(pc != null);
 			Debugger.Assert(eef != null);
 			Debugger.Assert(opa != null);
+			
+			// 定义做时间表的原则、方法、工具等，在 form的44页 有说明
+
 			return new ScheduleManagementPlan();
 		}
 
@@ -191,6 +194,8 @@
 			EnterpriseEnvironmentalFactors eef,
 			OrganizationalProcessAssets opa)
 		{
+			// 到这里的时候，WBS都已经建立好了？？？
+			//  我现在在做ZJ2项目计划时，无法马上就去定义WBS，而先假设了一个MilestoneList
 			Debugger.Assert(smp != null);
 			Debugger.Assert(sb != null);
 			Debugger.Assert(eef != null);
