@@ -15,6 +15,8 @@ namespace ConsoleTest
 				this.LocalDebug ();
 				this.Log ();
 				this.UnitTestOnInterface ();
+				this.Profiler ();
+				this.FrameDebug ();
 			}
 		}
 		
