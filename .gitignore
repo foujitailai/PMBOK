@@ -3,3 +3,5 @@ PMBOK/obj/
 *.user
 PMBOK.v12.suo
 PMBOK.sln.GhostDoc.xml
+/ConsoleTest/obj
+/ConsoleTest/bin
