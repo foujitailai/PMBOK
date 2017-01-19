@@ -1,13 +1,18 @@
-﻿<Properties StartupItem="ConsoleTest/ConsoleTest.csproj" RefactoringSettings.EnableRefactorings="True">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ConsoleTest/Game/GameMain.cs">
+﻿<Properties RefactoringSettings.EnableRefactorings="True" StartupConfiguration="{FE5A9D99-E4E9-4541-A28F-CC441E3CA5D2}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ConsoleTest/Game/Sample.cs">
     <Files>
-      <File FileName="ConsoleTest/Program.cs" Line="13" Column="1" />
+      <File FileName="ConsoleTest/Program.cs" Line="1" Column="1" />
       <File FileName="ConsoleTest/Game/GameMain.cs" Line="18" Column="2" />
+      <File FileName="ConsoleTest/Game/Sample.cs" Line="30" Column="14" />
+      <File FileName="ConsoleTest/Game/Business.cs" Line="1" Column="1" />
+      <File FileName="ConsoleTest/Game/Core.cs" Line="1" Column="1" />
+      <File FileName="ConsoleTest/Game/GameClient.cs" Line="26" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.ConsoleTest PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
