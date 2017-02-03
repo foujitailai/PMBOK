@@ -4,8 +4,9 @@ namespace ConsoleTest
 {
 	/// <summary>
 	/// 应用的时候，我想怎么去使用这些模块
-	/// 整个系统都是MVC的概念
-	/// 整个系统都应该都可以实现系统三要素, 三要素可以让系统变的非常的健壮\有活力\可扩展:
+	/// 整个系统就是 两点一线
+	/// 整个系统都是 MVC 的概念
+	/// 整个系统都应该都可以实现 系统三要素 , 三要素可以让系统变的非常的健壮\有活力\可扩展:
 	/// 1.适应力 - 为了生存, 自我复原能力, 在不同的环境下还能够正常的运转下去(多反馈回路相互影响自我调节)
 	/// 2.自组织 - 使自身结构复杂化能力, 学习\进化 (层次性可以认为就是自组织过程中产生出来)
 	/// 3.层次性 - 系统与子系统的包含&生成关系, 树形结构, 上层系统是为了下层系统而建立的
@@ -31,11 +32,11 @@ namespace ConsoleTest
 	{
 		class SampleFirst
 		{
-			public InstallEnvironment()
+			public void InstallEnvironment()
 			{
 			}
 			
-			public void SampleFirst()
+			public SampleFirst()
 			{
 				this.InstallEnvironment();
 

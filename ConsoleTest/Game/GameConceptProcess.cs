@@ -6,7 +6,7 @@ namespace ConsoleTest
 	{
 		public GameConceptProcess ()
 		{
-			// todo to create all classes that are new kind of game object in the project
+			// TODO to create all classes that are new kind of game object in the project
 
 			// 初始化游戏引擎
 			this.Init();
