@@ -168,7 +168,8 @@ namespace ConsoleTest
 
 			public void SimapleThird()
 			{
-				// 
+				// TODO 整体的MVC系统设计
+				// TODO 战斗系统降解成多个小系统（时间轴、各种轴插件、数值计算、动作同步、防外挂、BUFF系统、AI、游戏模式）
 			}
 		}
 	}
