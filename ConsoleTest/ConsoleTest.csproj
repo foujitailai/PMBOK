@@ -50,9 +50,13 @@
     <Compile Include="Game\GameClient.cs" />
     <Compile Include="Game\Core.cs" />
     <Compile Include="Game\Sample.cs" />
+    <Compile Include="Temp\FightingSystemTest.cs" />
+    <Compile Include="Temp\IFightingSystem.cs" />
+    <Compile Include="Temp\FightingSystem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Game\" />
+    <Folder Include="Temp\" />
   </ItemGroup>
 </Project>
