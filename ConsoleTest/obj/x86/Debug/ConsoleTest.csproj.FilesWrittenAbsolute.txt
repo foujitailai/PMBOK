@@ -1,1 +1,0 @@
-/Users/ebc/Projects/PMBOK/ConsoleTest/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
