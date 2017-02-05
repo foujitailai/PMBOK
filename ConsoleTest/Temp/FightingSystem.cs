@@ -50,9 +50,9 @@ namespace ClassLibrary1
 
 	class ShaftAttackBox : ShaftBase, IShaftPlugin
 	{
-		Action action;
+		ActorAction action;
 
-		public ShaftAttackBox(Action action)
+		public ShaftAttackBox(ActorAction action)
 		{
 			this.action = action;
 		}
@@ -134,8 +134,10 @@ namespace ClassLibrary1
 		}
 	}
 
-	class Action : IAction, IRun
+	public class ActorAction : IAction, IRun
 	{
+		public long ActionID { get; private set; }
+
 		public List<IShaftPlugin> Plugins { get; private set; }
 
 		public float CurrentTime { get; private set; }
@@ -150,7 +152,7 @@ namespace ClassLibrary1
 
 		ActionSystem actionSystem;
 
-		public Action(ActionSystem actionSystem)
+		public ActorAction(ActionSystem actionSystem)
 		{
 			this.actionSystem = actionSystem;
 		}
@@ -245,7 +247,7 @@ namespace ClassLibrary1
 		}
 	}
 
-	class ActionSystem : IRun, IActionSystem
+	public class ActionSystem : IRun, IActionSystem
 	{
 		public IAction Action { get; private set; }
 
@@ -255,7 +257,8 @@ namespace ClassLibrary1
 
 		public void AttackBoxCollided(IShaftPlugin plugin)
 		{
-			this.OnAttackBoxCollided(this, EventArgs.Empty);
+			//this.OnAttackBoxCollided(this, EventArgs.Empty);
+			new AttackBoxCollided().OnCollided();
 		}
 
 		public void SwitchActionImmediately(WantActionData want)
@@ -318,6 +321,41 @@ namespace ClassLibrary1
 		private void ClearRequests()
 		{
 			throw new NotImplementedException();
+		}
+	}
+
+	public class AttackBoxCollided
+	{
+		public event EventHandler OnValidCollision;
+
+		public void OnCollided()
+		{
+			// 是有效的碰撞吗？
+			if (this.IsValidCollision())
+			{
+				// 进行各种相关的变化
+				this.ApplyConllision();
+
+				this.OnValidCollision(this, EventArgs.Empty);
+			}
+		}
+
+		private void ApplyConllision()
+		{
+			// TODO 各种东西
+			//  变动作（要条件吗？）
+			//  变属性（要条件吗？）
+			//  加BUFF（要条件吗？）
+			//  其它
+		}
+
+		private bool IsValidCollision()
+		{
+			// TODO 攻击盒子所有者-攻击者满足有效碰撞条件？
+
+			// TODO 被攻击盒子碰撞者-被攻击者满足有效碰撞条件？
+
+			return false;
 		}
 	}
 }

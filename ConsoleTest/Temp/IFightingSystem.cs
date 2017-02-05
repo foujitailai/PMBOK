@@ -43,6 +43,8 @@ namespace ClassLibrary1
 
 	public interface IAction
 	{
+		long ActionID { get; }
+
 		List<IShaftPlugin> Plugins { get; }
 
 		void Reset();
