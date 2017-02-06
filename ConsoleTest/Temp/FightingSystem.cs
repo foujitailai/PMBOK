@@ -234,7 +234,7 @@ namespace ClassLibrary1
 				case "AttackBox":
 					var shaft = new ShaftAttackBox();
 					// [LINK]连接ShaftAttackBox与AttackBoxCollided
-					shaft.OnCollided += this.ActionSystem.AttackBoxCollided.OnCollided;
+					shaft.OnCollided = this.ActionSystem.AttackBoxCollided.OnCollided;
 					return shaft;
 				case "Effect": return new ShaftEffect();
 				case "Anim": return new ShaftAnim();

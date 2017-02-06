@@ -77,7 +77,10 @@ namespace ClassLibrary1
 	}
 
 
-	// 先放在这里吧,其它的东西
+	/// <summary>
+	/// 先放在这里吧,其它的东西,其实简单的版本可以直接使用EventHandle就完成了
+	/// EventHandle e += next.e
+	/// </summary>
 	public interface IChain
 	{
 		void Request(EventArgs e);
