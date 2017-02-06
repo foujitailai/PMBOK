@@ -75,4 +75,12 @@ namespace ClassLibrary1
 	public class Assistant
 	{
 	}
+
+
+	// 先放在这里吧,其它的东西
+	public interface IChain
+	{
+		void Request(EventArgs e);
+		IChain Next { get; set; }
+	}
 }

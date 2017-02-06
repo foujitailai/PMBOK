@@ -228,10 +228,14 @@ namespace ClassLibrary1
 
 		private IShaftPlugin CreatePlugin(PluginInfo plugin)
 		{
+			// TODO 这个函数,可以被拆分成小的类,比如注册方式d
 			switch (plugin.PType)
 			{
-					new ShaftAttackBox().OnCollided += (sender, args) => this.ActionSystem.AttackBoxCollided();
-				case "AttackBox": return new ShaftAttackBox();
+				case "AttackBox":
+					var shaft = new ShaftAttackBox();
+					// [LINK]连接ShaftAttackBox与AttackBoxCollided
+					shaft.OnCollided += this.ActionSystem.AttackBoxCollided.OnCollided;
+					return shaft;
 				case "Effect": return new ShaftEffect();
 				case "Anim": return new ShaftAnim();
 			}
@@ -253,10 +257,13 @@ namespace ClassLibrary1
 
 		public event EventHandler OnAttackBoxCollided;
 
-		public void AttackBoxCollided(IShaftPlugin plugin)
+		private AttackBoxCollided attackBoxCollided = new AttackBoxCollided();
+		public AttackBoxCollided AttackBoxCollided { get { return this.attackBoxCollided; } }
+
+		public ActionSystem()
 		{
-			//this.OnAttackBoxCollided(this, EventArgs.Empty);
-			new AttackBoxCollided().OnCollided();
+			// [LINK]连接ActionSystem与AttackBoxCollided
+			this.attackBoxCollided.OnValidCollision += (sender, e) => this.OnAttackBoxCollided(this, e);
 		}
 
 		public void SwitchActionImmediately(WantActionData want)
@@ -326,7 +333,7 @@ namespace ClassLibrary1
 	{
 		public event EventHandler OnValidCollision;
 
-		public void OnCollided()
+		public void OnCollided(object sender, EventArgs e)
 		{
 			// 是有效的碰撞吗？
 			if (this.IsValidCollision())
