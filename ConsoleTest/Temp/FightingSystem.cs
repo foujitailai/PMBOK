@@ -50,12 +50,7 @@ namespace ClassLibrary1
 
 	class ShaftAttackBox : ShaftBase, IShaftPlugin
 	{
-		ActorAction action;
-
-		public ShaftAttackBox(ActorAction action)
-		{
-			this.action = action;
-		}
+		public EventHandler OnCollided;
 
 		public void OnActionEnd()
 		{
@@ -77,14 +72,16 @@ namespace ClassLibrary1
 			throw new NotImplementedException();
 		}
 
-		private void OnCollided()
+		private void OnCollided2()
 		{
 			// TODO 碰撞之后,将是一个非常复杂的事情,将这个事件传递出去,自己不做什么处理
 
 			//     [内部]  将一些shaft传递添加到碰撞双方
 
 			//     [外部]  技能效果的应用,伤血,改变动作的请求
-			this.action.ActionSystem.AttackBoxCollided(this);
+			//this.action.ActionSystem.AttackBoxCollided(this);
+
+			this.OnCollided(this, EventArgs.Empty);
 		}
 	}
 
@@ -233,7 +230,8 @@ namespace ClassLibrary1
 		{
 			switch (plugin.PType)
 			{
-				case "AttackBox": return new ShaftAttackBox(this);
+					new ShaftAttackBox().OnCollided += (sender, args) => this.ActionSystem.AttackBoxCollided();
+				case "AttackBox": return new ShaftAttackBox();
 				case "Effect": return new ShaftEffect();
 				case "Anim": return new ShaftAnim();
 			}
