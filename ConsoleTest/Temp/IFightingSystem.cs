@@ -22,7 +22,7 @@ namespace ClassLibrary1
 	{
 		IAction Action { get; }
 
-		event EventHandler SwitchedAction;
+		event EventHandler ActionChanged;
 		event EventHandler AttackBoxCollided;
 
 		void SwitchActionImmediately(WantActionData want);
@@ -86,7 +86,7 @@ namespace ClassLibrary1
 
 	/// <summary>
 	/// 先放在这里吧,其它的东西,其实简单的版本可以直接使用EventHandle就完成了
-	/// EventHandle e += next.e
+	///  e += next.e
 	/// </summary>
 	public interface IChain
 	{

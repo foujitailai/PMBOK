@@ -6,6 +6,7 @@ using ClassLibrary1;
 namespace ClassLibrary1
 {
 	using System.Collections.Specialized;
+	using System.Threading;
 
 	public class FightingSystem
 	{
@@ -255,7 +256,7 @@ namespace ClassLibrary1
 	{
 		public IAction Action { get; private set; }
 
-		public event EventHandler SwitchedAction;
+		public event EventHandler ActionChanged;
 
 		public event EventHandler AttackBoxCollided;
 
@@ -307,7 +308,7 @@ namespace ClassLibrary1
 			action.Switch(wad);
 
 			// 切的处理[外部]
-			A.RaiseEvent(this, SwitchedAction, EventArgs.Empty);
+			A.RaiseEvent(this, this.ActionChanged, EventArgs.Empty);
 		}
 
 		private bool CanSwitch(List<RequestData> requests, out WantActionData wad)
@@ -366,36 +367,85 @@ namespace ClassLibrary1
 		}
 	}
 
-	public class Input
+	public class App
 	{
-		void OnInput(EventArgs e)
+		Input input = new Input();
+		List<Thread> threads = new List<Thread>();
+
+		private void Enter()
 		{
-			// 可以使用Chain of Responsibility来链接它们
+			//new Action().BeginInvoke(this.PlayStage);
+			threads.Add(new Thread(() => this.PlayStage()));
+		}
 
-			if (this.IsDebugInput())
-			{
-				
-			}
-			else if (this.IsUIInput())
-			{
-				
-			}
-			else if (this.IsActorInput())
-			{
-				this.GetCurActor().OnInput();
-			}
-			else if (this.IsAppInput())
-			{
+		private void Leave()
+		{
+			this.threads.ForEach((obj) => obj.Abort());
+			this.threads.Clear();
+		}
 
-			}
-			else if (this.IsOtherInput())
-			{
+		private void Tick()
+		{
+			this.input.OnInput(EventArgs.Empty);
+		}
 
+		public void Run()
+		{
+			this.Enter();
+
+			this.Tick();
+
+			this.Leave();
+		}
+
+		public void PlayStage()
+		{
+			bool isStageEnd = false;
+			Stage stage = new Stage();
+			stage.StageEnded += (sender, e) => isStageEnd = true;
+
+			while (!isStageEnd)
+			{
+				stage.Run();
 			}
 		}
 	}
 
-	public class Actor
+	public class Input
+	{
+		public void OnInput(EventArgs e)
+		{
+			// 可以使用Chain of Responsibility来链接它们
+
+			if (this.IsDebugInput(e))
+			{
+				
+			}
+			else if (this.IsUIInput(e))
+			{
+				
+			}
+			else if (this.IsActorInput(e))
+			{
+				this.GetCurActor().OnInput(e);
+			}
+			else if (this.IsAppInput(e))
+			{
+
+			}
+			else if (this.IsOtherInput(e))
+			{
+
+			}
+		}
+
+		Actor GetCurActor()
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class Actor : IRun
 	{
 		public string Name;
 
@@ -403,9 +453,12 @@ namespace ClassLibrary1
 
 		public void OnInput()
 		{
-			this.Move();
-			this.Skill();
-			this.Others();
+			if (this.IsMove())
+				this.Move();
+			else if (this.IsSkill())
+				this.Skill();
+			else if (this.IsOthers())
+				this.Others();
 		}
 
 		private void Move()
@@ -424,6 +477,11 @@ namespace ClassLibrary1
 			throw new NotImplementedException();
 		}
 
+		public void Run()
+		{
+			throw new NotImplementedException();
+		}
+
 	}
 
 	public class Stage
@@ -435,10 +493,15 @@ namespace ClassLibrary1
 
 		void Run()
 		{
-// 			this.SelectHeros();
-// 			this.Loading();
-// 			this.PlayGame();
-// 			this.ExitGame();
+			// 			this.SelectHeros();
+			// 			this.Loading();
+			// 			this.PlayGame();
+			// 			this.ExitGame();
+
+			foreach (var vk in this.DicActor)
+			{
+				vk.Value.Run();
+			}
 		}
 
 		void Enter()
