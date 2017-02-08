@@ -5,6 +5,8 @@ using ClassLibrary1;
 
 namespace ClassLibrary1
 {
+	using System.Collections.Specialized;
+
 	public class FightingSystem
 	{
 		public FightingSystem()
@@ -50,7 +52,7 @@ namespace ClassLibrary1
 
 	class ShaftAttackBox : ShaftBase, IShaftPlugin
 	{
-		public EventHandler OnCollided;
+		public EventHandler Collided;
 
 		public void OnActionEnd()
 		{
@@ -72,7 +74,7 @@ namespace ClassLibrary1
 			throw new NotImplementedException();
 		}
 
-		private void OnCollided2()
+		private void OnCollided()
 		{
 			// TODO 碰撞之后,将是一个非常复杂的事情,将这个事件传递出去,自己不做什么处理
 
@@ -81,7 +83,7 @@ namespace ClassLibrary1
 			//     [外部]  技能效果的应用,伤血,改变动作的请求
 			//this.action.ActionSystem.AttackBoxCollided(this);
 
-			this.OnCollided(this, EventArgs.Empty);
+			this.Collided(this, EventArgs.Empty);
 		}
 	}
 
@@ -234,7 +236,7 @@ namespace ClassLibrary1
 				case "AttackBox":
 					var shaft = new ShaftAttackBox();
 					// [LINK]连接ShaftAttackBox与AttackBoxCollided
-					shaft.OnCollided = this.ActionSystem.AttackBoxCollided.OnCollided;
+					shaft.Collided = this.ActionSystem.AttackBoxCollision.OnCollided;
 					return shaft;
 				case "Effect": return new ShaftEffect();
 				case "Anim": return new ShaftAnim();
@@ -253,17 +255,17 @@ namespace ClassLibrary1
 	{
 		public IAction Action { get; private set; }
 
-		public event EventHandler OnSwitchAction;
+		public event EventHandler SwitchedAction;
 
-		public event EventHandler OnAttackBoxCollided;
+		public event EventHandler AttackBoxCollided;
 
-		private AttackBoxCollided attackBoxCollided = new AttackBoxCollided();
-		public AttackBoxCollided AttackBoxCollided { get { return this.attackBoxCollided; } }
+		private AttackBoxCollision attackBoxCollision = new AttackBoxCollision();
+		public AttackBoxCollision AttackBoxCollision { get { return this.attackBoxCollision; } }
 
 		public ActionSystem()
 		{
-			// [LINK]连接ActionSystem与AttackBoxCollided
-			this.attackBoxCollided.OnValidCollision += (sender, e) => this.OnAttackBoxCollided(this, e);
+			// [LINK]连接ActionSystem与AttackBoxCollision
+			this.attackBoxCollision.Collided += (sender, e) => this.AttackBoxCollided(this, e);
 		}
 
 		public void SwitchActionImmediately(WantActionData want)
@@ -305,7 +307,7 @@ namespace ClassLibrary1
 			action.Switch(wad);
 
 			// 切的处理[外部]
-			this.OnSwitchAction(this, EventArgs.Empty);
+			A.RaiseEvent(this, SwitchedAction, EventArgs.Empty);
 		}
 
 		private bool CanSwitch(List<RequestData> requests, out WantActionData wad)
@@ -329,9 +331,9 @@ namespace ClassLibrary1
 		}
 	}
 
-	public class AttackBoxCollided
+	public class AttackBoxCollision
 	{
-		public event EventHandler OnValidCollision;
+		public event EventHandler Collided;
 
 		public void OnCollided(object sender, EventArgs e)
 		{
@@ -341,7 +343,7 @@ namespace ClassLibrary1
 				// 进行各种相关的变化
 				this.ApplyConllision();
 
-				this.OnValidCollision(this, EventArgs.Empty);
+				this.Collided(this, EventArgs.Empty);
 			}
 		}
 
@@ -362,5 +364,181 @@ namespace ClassLibrary1
 
 			return false;
 		}
+	}
+
+	public class Input
+	{
+		void OnInput(EventArgs e)
+		{
+			// 可以使用Chain of Responsibility来链接它们
+
+			if (this.IsDebugInput())
+			{
+				
+			}
+			else if (this.IsUIInput())
+			{
+				
+			}
+			else if (this.IsActorInput())
+			{
+				this.GetCurActor().OnInput();
+			}
+			else if (this.IsAppInput())
+			{
+
+			}
+			else if (this.IsOtherInput())
+			{
+
+			}
+		}
+	}
+
+	public class Actor
+	{
+		public string Name;
+
+		public IActionSystem ActionSystem;
+
+		public void OnInput()
+		{
+			this.Move();
+			this.Skill();
+			this.Others();
+		}
+
+		private void Move()
+		{
+			WantActionData wadMove = new WantActionData();
+			this.ActionSystem.SwitchActionByRule(wadMove);
+		}
+
+		private void Skill()
+		{
+			throw new NotImplementedException();
+		}
+
+		private void Others()
+		{
+			throw new NotImplementedException();
+		}
+
+	}
+
+	public class Stage
+	{
+		public event EventHandler StageStarted;
+		public event EventHandler StageEnded;
+
+		private Dictionary<string, Actor> DicActor;
+
+		void Run()
+		{
+// 			this.SelectHeros();
+// 			this.Loading();
+// 			this.PlayGame();
+// 			this.ExitGame();
+		}
+
+		void Enter()
+		{
+			A.RaiseEvent(this, this.StageStarted, EventArgs.Empty);
+		}
+
+		void Leave()
+		{
+			A.RaiseEvent(this, this.StageEnded, EventArgs.Empty);
+		}
+
+		void Loading()
+		{
+		}
+
+// 		void CreateUnit()
+// 		{
+// 			this.CreateScene();
+// 			this.CreateHero();
+// 			this.CreateMonster();
+// 		}
+// 
+// 		void PlayGame()
+// 		{
+// 			this.CreateUnit();
+// 			this.Readying();
+// 			this.Playing();
+// 			this.GameOver();
+// 		}
+// 
+// 		void Playing()
+// 		{
+// 			this.MoveHero();
+// 			this.HitHero();
+// 			this.KillHero();
+// 
+// 			this.KillMonster();
+// 			this.HitMonster();
+// 			this.MoveMonster();
+// 		}
+// 
+// 		void MoveHero()
+// 		{
+// 			this.Input();
+// 			this.Event();
+// 			this.Rule();
+// 			this.ActionSystem();
+// 			this.ChangeData();
+// 			this.NotifyRenderSystem();
+// 
+// 			this.NotifyNetworkSystem();
+// 			this.NotifyGameServer();
+// 			this.NotifyOthers();
+// 
+// 			this.DoActionSystemOnOthers();
+// 		}
+// 
+// 		void HitHero()
+// 		{
+// 			this.Input();
+// 			this.Event();
+// 			this.Rule();
+// 			this.ActionSystem();
+// 			this.ChangeData();
+// 			this.NotifyRenderSystem();
+// 
+// 			this.OnHitOther();
+// 
+// 			this.DoActionSystemOnOthers();
+// 
+// 		}
+// 
+// 		void OnHitOther()
+// 		{
+// 			this.CalculateProperties();
+// 		}
+// 
+// 		void OnEnemiesDead()
+// 		{
+// 			if (this.rule.IsEnd)
+// 			{
+// 				this.OnCompleted();
+// 			}
+// 		}
+// 
+// 		void OnTimeOver()
+// 		{
+// 			if (this.rule.IsEnd)
+// 			{
+// 				this.OnCompleted();
+// 			}
+// 		}
+// 
+// 		void OnNetworkDisconnected()
+// 		{
+// 			if (this.rule.IsEnd)
+// 			{
+// 				this.OnCompleted();
+// 			}
+// 		}
 	}
 }

@@ -22,8 +22,8 @@ namespace ClassLibrary1
 	{
 		IAction Action { get; }
 
-		event EventHandler OnSwitchAction;
-		event EventHandler OnAttackBoxCollided;
+		event EventHandler SwitchedAction;
+		event EventHandler AttackBoxCollided;
 
 		void SwitchActionImmediately(WantActionData want);
 		void SwitchActionByRule(WantActionData want);
@@ -72,8 +72,15 @@ namespace ClassLibrary1
 		void OnActionEnd();
 	}
 
-	public class Assistant
+	// Assistant
+	public class A
 	{
+		static public void RaiseEvent(object sender, EventHandler handler, EventArgs e)
+		{
+			if (handler != null)
+				handler(sender, e);
+		}
+
 	}
 
 
