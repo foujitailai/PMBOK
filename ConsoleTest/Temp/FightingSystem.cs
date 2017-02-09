@@ -479,7 +479,7 @@ namespace ClassLibrary1
 
 		public void Run()
 		{
-			throw new NotImplementedException();
+			((IRun)this.ActionSystem).Run();
 		}
 
 	}
