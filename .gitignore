@@ -20,3 +20,5 @@ PMBOK/.DS_Store
 PMBOK.userprefs
 /ConsoleTest/obj
 *.suo
+/Refactoring/bin
+/Refactoring/obj

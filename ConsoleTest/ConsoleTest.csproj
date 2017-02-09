@@ -51,9 +51,20 @@
     <Compile Include="Game\GameClient.cs" />
     <Compile Include="Game\Core.cs" />
     <Compile Include="Game\Sample.cs" />
+    <Compile Include="Temp\ActionSystem.cs" />
+    <Compile Include="Temp\Actor.cs" />
+    <Compile Include="Temp\App.cs" />
+    <Compile Include="Temp\ASAction.cs" />
     <Compile Include="Temp\FightingSystemTest.cs" />
     <Compile Include="Temp\IFightingSystem.cs" />
     <Compile Include="Temp\FightingSystem.cs" />
+    <Compile Include="Temp\Input.cs" />
+    <Compile Include="Temp\ShaftAnim.cs" />
+    <Compile Include="Temp\ShaftAttack.cs" />
+    <Compile Include="Temp\ShaftBase.cs" />
+    <Compile Include="Temp\ShaftEffect.cs" />
+    <Compile Include="Temp\Stage.cs" />
+    <Compile Include="Temp\TreeNode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

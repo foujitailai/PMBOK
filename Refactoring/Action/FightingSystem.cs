@@ -6,8 +6,6 @@ namespace ClassLibrary1
 {
 	using System.Collections.Specialized;
 
-	using ConsoleTest.Misc;
-
 	public class FightingSystem
 	{
 		public FightingSystem()
