@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary1
+namespace Refactoring
 {
 	/// <summary>
 	/// 解决什么问题？玩游戏玩的数值，这里就是处理这些数值的规则

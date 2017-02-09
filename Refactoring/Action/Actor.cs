@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary1
+﻿namespace Refactoring
 {
 	using System;
 
@@ -17,6 +17,11 @@
 			this.node = new DefaultMutableTreeNode(this);
 			A.Tree.Register(this, this.node);
 			this.node.Parent = A.Tree.Cast(this.GetInput());
+		}
+
+		private object GetInput()
+		{
+			throw new NotImplementedException();
 		}
 
 		public void OnInput()

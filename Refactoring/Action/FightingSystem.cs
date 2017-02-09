@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using ClassLibrary1;
+using Refactoring;
 
-namespace ClassLibrary1
+namespace Refactoring
 {
 	using System.Collections.Specialized;
 

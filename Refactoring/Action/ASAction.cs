@@ -1,4 +1,4 @@
-namespace ClassLibrary1
+namespace Refactoring
 {
 	using System;
 	using System.Collections.Generic;

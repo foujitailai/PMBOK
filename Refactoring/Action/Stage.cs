@@ -1,4 +1,4 @@
-namespace ClassLibrary1
+namespace Refactoring
 {
 	using System;
 	using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace ClassLibrary1
 
 		private Dictionary<string, Actor> DicActor;
 
-		void Run()
+		public void Run()
 		{
 			// 			this.SelectHeros();
 			// 			this.Loading();
