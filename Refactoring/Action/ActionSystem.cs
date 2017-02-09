@@ -2,6 +2,7 @@ namespace Refactoring
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Runtime.Remoting.Messaging;
 
 	public class ActionSystem : IRun, IActionSystem
 	{
@@ -68,6 +69,23 @@ namespace Refactoring
 		private bool CanSwitch(List<RequestData> requests, out WantActionData wad)
 		{
 			throw new NotImplementedException();
+
+			object skillData = null;
+			long actionID = 0;
+			object sn = null;
+
+			bool result = false;
+
+			// key next action
+			this.CanSwitchByKey();
+
+			// time next action
+			this.CanSwitchByTime();
+
+			// rule next action
+			this.CanSwitchByRule();
+
+			return result;
 		}
 
 		private List<RequestData> GetRequests()
