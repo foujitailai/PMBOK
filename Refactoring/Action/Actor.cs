@@ -67,7 +67,13 @@
 			}
 
 			((IRun)this.ActionSystem).Run();
+
+			this.UpdateMove();
 		}
 
+		private void UpdateMove()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
