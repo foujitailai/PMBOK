@@ -3,6 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Game.Tests
 {
+	using System.Runtime.Remoting.Messaging;
+
+	using Fighting;
+
 	using UnityEngine;
 
 	[TestClass]
@@ -13,9 +17,16 @@ namespace Game.Tests
 			public GameObject GO { get { return null; } }
 			public ILikeGameObject parent { get
 			{
-				return null;
+				return this._parent;
 			}
 			}
+
+			private readonly ILikeGameObject _parent;
+			public FakeLikeGameObject(ILikeGameObject parent)
+			{
+				this._parent = parent;
+			}
+
 			public bool Equals(ILikeGameObject other)
 			{
 				return this.GO == other.GO;
@@ -24,9 +35,44 @@ namespace Game.Tests
 
 		class TestingAttackBoxImpl : AttackBoxImpl
 		{
+
+			class FakeActionInfo : IActionInfo
+			{
+				public ShaftBase GetShaftByGO(GameObject myGo)
+				{
+					return null;
+				}
+			}
+
+			class FakeActionManager : IActionManager
+			{
+				public Actor Actor { get; set; }
+
+				public bool Invincible { get; set; }
+			}
+
+			class FakeActionState : IActionState
+			{
+				public void OnAttacked(Collider attackBox, Collider other, ShaftAttack rAttack)
+				{
+					
+				}
+			}
+
+			private FakeActionInfo actionInfo = new FakeActionInfo();
+
+			private FakeActionManager actionManager = new FakeActionManager();
+
+			private FakeActionState actionState = new FakeActionState();
+
 			public TestingAttackBoxImpl(ILikeGameObject self)
 				: base(self)
 			{
+			}
+
+			protected override ShaftAttack NewGetShaftAttack(IActionInfo actionInfo)
+			{
+				return null;
 			}
 
 			protected override Collider NewGetComponentCollider()
@@ -34,43 +80,42 @@ namespace Game.Tests
 				return null;
 			}
 
-			protected override ILikeGameObject NewGetParent()
+			protected override IActionInfo NewGetComponentActionInfo(ILikeGameObject parent)
 			{
-				return null;
-			}
-			protected override ActionInfo NewGetComponentActionInfo(ILikeGameObject parent)
-			{
-				return null;
+				return this.actionInfo;
 			}
 
-			protected override ActionManager NewGetComponentActionManager(ILikeGameObject rObjTarget)
+			protected override IActionManager NewGetComponentActionManager(ILikeGameObject rObjTarget)
 			{
-				return null;
+				return this.actionManager;
 			}
 
-			protected override ActionState NewGetComponentActionStage(ILikeGameObject parent)
+			protected override IActionState NewGetComponentActionStage(ILikeGameObject parent)
 			{
-				return null;
+				return this.actionState;
 			}
 		}
 
 		[TestMethod]
 		public void TestCreate()
 		{
-			var f = new TestingAttackBoxImpl(new FakeLikeGameObject());
+			var f = new TestingAttackBoxImpl(new FakeLikeGameObject(null));
 		}
 
 		[TestMethod]
 		public void TestFirst()
 		{
-			var f = new TestingAttackBoxImpl(new FakeLikeGameObject());
+			var f = new TestingAttackBoxImpl(
+				new FakeLikeGameObject(
+					new FakeLikeGameObject(
+						new FakeLikeGameObject(null))));
 
 
-			//Assert.AreEqual(null, f.NewGetAM());
+			Assert.AreEqual(null, f.NewGetAM());
 
 			f.NewCheck();
 
-			//Assert.AreNotEqual(null, f.NewGetAM());
+			Assert.AreNotEqual(null, f.NewGetAM());
 		}
 	}
 }

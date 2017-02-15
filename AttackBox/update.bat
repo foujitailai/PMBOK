@@ -1,0 +1,2 @@
+copy D:\work\wangling-2017\Assets\Scripts\ActionSystem\AttackBox.cs D:\phonegap-Ps\PMBOK\AttackBox\AttackBox.cs
+copy D:\work\wangling-2017\Game.Tests\AttackBoxTest.cs D:\phonegap-Ps\PMBOK\AttackBox\AttackBoxTest.cs

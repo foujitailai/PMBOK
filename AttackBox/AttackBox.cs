@@ -3,9 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using Fighting;
 
 namespace Fighting
 {
+
+	public interface IActionInfo
+	{
+		ShaftBase GetShaftByGO(GameObject myGo);
+	}
+
+	public interface IActionManager
+	{
+		Actor Actor { get; set; }
+
+		bool Invincible { get; set; }
+	}
+
+	public interface IActionState
+	{
+		void OnAttacked(Collider attackBox, Collider other, ShaftAttack rAttack);
+	}
 
 
 }
@@ -36,7 +54,7 @@ public class LikeGameObjectImpl : ILikeGameObject
 
 public class AttackBoxImpl
 {
-	private ActionManager _AM = null;
+	private IActionManager _AM = null;
 
 	private ShaftAttack _attack = null;
 
@@ -44,14 +62,14 @@ public class AttackBoxImpl
 
 	private Dict<Collider, bool> attackedActor = new Dict<Collider, bool>();
 
-	private ILikeGameObject self;
+	protected ILikeGameObject self;
 
 	public AttackBoxImpl(ILikeGameObject self)
 	{
 		this.self = self;
 	}
 
-	public ActionManager NewGetAM()
+	public IActionManager NewGetAM()
 	{
 		return this._AM;
 	}
@@ -72,7 +90,7 @@ public class AttackBoxImpl
 
 	public bool NewIsTarget(GameObject rObjTarget)
 	{
-		ActionManager rTargetAM = this.NewGetComponentActionManager(new LikeGameObjectImpl(rObjTarget));
+		IActionManager rTargetAM = this.NewGetComponentActionManager(new LikeGameObjectImpl(rObjTarget));
 		if (rTargetAM == null || rTargetAM.Actor == null)
 		{
 			return false;
@@ -135,11 +153,11 @@ public class AttackBoxImpl
 		{
 			if (this._attack == null)
 			{
-				ActionInfo rActionInfo = this.NewGetComponentActionInfo(this.NewGetParent());
+				IActionInfo rActionInfo = this.NewGetComponentActionInfo(this.NewGetParent());
 				
 				if (rActionInfo != null)
 				{
-					this._attack = rActionInfo.GetShaftByGO(this.NewGetComponentCollider().gameObject) as ShaftAttack;
+					this._attack = this.NewGetShaftAttack(rActionInfo);
 				}
 			}
 
@@ -166,7 +184,7 @@ public class AttackBoxImpl
 				&& !this.attackedActor.ContainsKey(other) // 是否为有效打击目标
 				&& this.NewIsTarget(other.gameObject) )
 			{
-				ActionState actionState = this.NewGetComponentActionStage(this.NewGetParent().parent);
+				IActionState actionState = this.NewGetComponentActionStage(this.NewGetParent().parent);
 				if (actionState != null)
 				{
 					this._hitCount++;
@@ -193,6 +211,11 @@ public class AttackBoxImpl
 #endif
 	}
 
+	protected virtual ShaftAttack NewGetShaftAttack(IActionInfo rActionInfo)
+	{
+		return rActionInfo.GetShaftByGO(this.NewGetComponentCollider().gameObject) as ShaftAttack;
+	}
+
 	protected virtual Collider NewGetComponentCollider()
 	{
 		return this.self.GO.GetComponent<Collider>();
@@ -203,17 +226,17 @@ public class AttackBoxImpl
 		return this.self.parent;
 	}
 
-	protected virtual ActionInfo NewGetComponentActionInfo(ILikeGameObject parent)
+	protected virtual IActionInfo NewGetComponentActionInfo(ILikeGameObject parent)
 	{
 		return parent.GO.GetComponent<ActionInfo>();
 	}
 
-	protected virtual ActionManager NewGetComponentActionManager(ILikeGameObject rObjTarget)
+	protected virtual IActionManager NewGetComponentActionManager(ILikeGameObject rObjTarget)
 	{
 		return rObjTarget.GO.GetComponent<ActionManager>();
 	}
 
-	protected virtual ActionState NewGetComponentActionStage(ILikeGameObject parent)
+	protected virtual IActionState NewGetComponentActionStage(ILikeGameObject parent)
 	{
 		return parent.GO.GetComponent<ActionState>();
 	}
@@ -229,7 +252,7 @@ public class AttackBox : MonoBehaviour
 	{
 		get
 		{
-			return this.impl.NewGetAM();
+			return this.impl.NewGetAM() as ActionManager;
 		}
 	}
 
