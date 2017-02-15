@@ -1,0 +1,93 @@
+AttackBox的重构
+
+粗看到一些困难
+	API库的派生类MonoBehaviour
+	使用GetComponent
+	访问Transfrom
+	Actor
+	条件检查集合
+	ActionState
+
+想像的步骤
+	在测试中创建ActionBox
+	将功能都提成一般的成员函数
+	准备好搬家
+	新类AttackBoxLogic搬家
+	在原AttackBox类上建立委托
+	修复创建原AttackBox类的地方
+	测试
+	
+真实的步骤
+	B1 = 修改代码的艺术
+	“护”是首要目的，有了“护”之后，重构就可以大胆了
+	分析原AttackBox的职责
+	
+	新建测试的solution与project
+	建立项目的引用关系
+	添加AttackBoxTests测试类
+	添加第一个测试函数testCreate
+	让第一个测试函数编译通过
+		发现AttackBox派生自MonoBehaviour，根本构造不出来
+		分离AttackBox与MonoBehaviour的关系
+			将AttackBox里面所有public的函数内容全部分离到一New****的函数里面去，参考B1.25.7
+			New***的函数全是private的
+			将所有的private成员变量与这些New***集中到一起
+			建立一个新类AttackBoxImpl
+			将所有集中在一起的New***与成员变量都剪切过去
+			在AttackBox中新建AttackBoxImpl
+			修复AttackBox中的函数连接关系-委托到AttackBoxImpl
+			修复AttackBoxImpl中的编译错误
+				调用非New开始原AttackBox中的函数，改成New开头的函数
+				调用基类的函数与属性
+					各种GetComponent，要让人疯了
+					要引入AttackBox的GameObject进来
+						这个问题让我头发都白了，试了几种方法
+						对代码进行阅读，寻找灵感
+						最终使用B1.25.1与B1.25.6来解决这个问题
+						更换GetTransform().parent为NewGetParent()函数，为了安全，先手工替换，再改函数名
+						ILikeGameObject
+						LikeGameObjectImpl
+						FakeLikeGameObject
+						TestingAttackBoxImpl
+						
+						TestCreate成功
+			
+	第一个真正的功能测试
+		找了一个简单的NewCheck来做测试
+		寻找里面可以感知的地方
+			Assert.AreEqual(null, f.NewGetAM());
+			f.NewCheck();
+			Assert.AreNotEqual(null, f.NewGetAM());
+		编译 - 成功
+		运行 - 失败
+			错误原因：System.Security.SecurityException ECall
+			到处找原因(ildasm.exe, google)，结果发现是因为代码里面使用了
+				rActionInfo.GetShaftByGO
+				这个类是直接从MonoBehaviour继承下来的
+				当在代码里面直接使用从MonoBehaviour继承下来的类，会直接得到这个错误
+				这意味着，之后的代码要把所有MonoBehaviour的东西全部消灭掉
+				开始去消灭这个问题吧
+				去掉MonoBehaviour的问题
+		运行 - 失败
+			错误原因：ActionManager,ActionInfo，都是空的
+				无法创建这两个类，因为它们又是MonoBehaviour的
+				为它们建立interface，在AttackBoxImpl中直接使用这些interface去操作
+					改成interface之后，各种编译不过的问题，一个个的去修正
+				为这些interface建立Fake对象，在测试中可以去用
+		运行 - 成功
+		
+	??????然后呢，重构？下一个测试？
+			
+	
+-------------------------------------------------------------	
+记录从【全局变量】到【抽象接口、实现】经历的过程
+接口传达职责而非实现细节
+
+解依赖，比喻为：
+从现实中的类似情况中找，就是“提纯”的工作
+把要解依赖的代码想像成一个融合了各种材质的方块体
+现要从这个代码块分离出耦合的东西出来
+	往上提
+	向下拉
+	独立出一块（派生替换函数）
+	假物代替（接口）
