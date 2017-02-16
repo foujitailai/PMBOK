@@ -123,11 +123,7 @@ public class AttackBoxImpl
 		}
 
 		// 自己的Avatar  GameObject
-		if (this.NewGetParent() == null || this.NewGetParent().parent == null)
-		{
-			return false;
-		}
-		bool isSelf = rObjTarget == this.NewGetParent().parent;
+		bool isSelf = (rTargetAM == this._AM);
 
 		bool isActor = false;
 		switch (rTargetAM.NewActor.TypeName)
@@ -178,6 +174,7 @@ public class AttackBoxImpl
 		{
 			if (this._attack == null)
 			{
+				modify NewGetComponentActionInfo parame to self and encapsulate the hierarchy of game object
 				IActionInfo rActionInfo = this.NewGetComponentActionInfo(this.NewGetParent());
 				
 				if (rActionInfo != null)
