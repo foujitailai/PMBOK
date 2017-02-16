@@ -22,3 +22,17 @@ PMBOK.userprefs
 *.suo
 /Refactoring/bin
 /Refactoring/obj
+
+TryNUnitTest.Tests/bin/Debug/nunit.framework.dll
+
+TryNUnitTest.Tests/bin/Debug/TryNUnitTest.Tests.dll
+
+TryNUnitTest.Tests/bin/Debug/TryNUnitTest.Tests.dll.mdb
+
+TryNUnitTest.Tests/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+
+TryNUnitTest.Tests/obj/Debug/TryNUnitTest.Tests.csproj.FilesWrittenAbsolute.txt
+
+TryNUnitTest.Tests/obj/Debug/TryNUnitTest.Tests.dll
+
+TryNUnitTest.Tests/obj/Debug/TryNUnitTest.Tests.dll.mdb
