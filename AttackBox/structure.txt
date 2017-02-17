@@ -1,0 +1,22 @@
+Player
+.Animation
+.CapsuleCollider
+cs.CurveCalclator
+cs.ActionState
+cs.ActionManager
+cs.ActionInfo
+cs.ActorProperty
+cs.PlayerController
+cs.HPBarComponent
+cs.EnergyChageBarComponent
+cs.RageBarComponent
+cs.AIManagerPlayer
+cs.AIMonster
+cs.RoleBarManager
+	-ActionGO
+	cs.ActionInfo	
+	cs.DummyAnimationParts	
+	cs.AnimationParts	
+		-ShaftAttack
+		.BoxCollider
+		cs.AttackBox	

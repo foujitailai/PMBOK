@@ -32,6 +32,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
+    <Compile Include="..\AttackBox\AttackBox.cs">
+      <Link>AttackBox.cs</Link>
+    </Compile>
+    <Compile Include="..\AttackBox\AttackBoxTest.cs">
+      <Link>AttackBoxTest.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

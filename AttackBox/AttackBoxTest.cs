@@ -35,41 +35,75 @@ namespace Game.Tests
 			public Collider collider { get; set; }
 
 			public string tag { get; set; }
+
 		}
 
-		class TestingAttackBoxImpl : AttackBoxImpl
+		public class FakeActionInfo : IActionInfo
 		{
-			internal class FakeActionInfo : IActionInfo
+			public ShaftBase GetShaftByGO(GameObject myGo)
 			{
-				public ShaftBase GetShaftByGO(GameObject myGo)
-				{
-					return null;
-				}
+				return null;
 			}
+		}
 
-			internal class FakeActionManager : IActionManager
+		public class FakeActionManager : IActionManager
+		{
+			public IActor NewActor { get; set; }
+
+			public bool Invincible { get; set; }
+		}
+
+		public class FakeActionState : IActionState
+		{
+			public bool IsOnAttackedCalled;
+
+			public void OnAttacked(Collider attackBox, Collider other, ShaftAttack rAttack)
 			{
-				public IActor NewActor { get; set; }
-
-				public bool Invincible { get; set; }
+				this.IsOnAttackedCalled = true;
 			}
+		}
 
-			internal class FakeActionState : IActionState
-			{
-				public bool IsOnAttackedCalled;
-				public void OnAttacked(Collider attackBox, Collider other, ShaftAttack rAttack)
-				{
-					this.IsOnAttackedCalled = true;
-				}
-			}
-
+		public class FakeAttackBoxGameObject : FakeLikeGameObject, IFightingGameObject
+		{
 			public FakeActionInfo actionInfo = new FakeActionInfo();
 
 			public FakeActionManager actionManager = new FakeActionManager();
 
 			public FakeActionState actionState = new FakeActionState();
 
-			public ShaftAttack shaftAttack;
+			public FakeAttackBoxGameObject(ILikeGameObject parent)
+				: base(parent)
+			{
+			}
+
+			public IActionState ActionState
+			{
+				get
+				{
+					return this.actionState;
+				}
+			}
+
+			public IActionInfo ActionInfo
+			{
+				get
+				{
+					return this.actionInfo;
+				}
+			}
+
+			public IActionManager ActionManager
+			{
+				get
+				{
+					return this.actionManager;
+				}
+			}
+		}
+
+		class TestingAttackBoxImpl : AttackBoxImpl
+		{
+			public ShaftAttack ShaftAttack;
 
 			public TestingAttackBoxImpl(ILikeGameObject self)
 				: base(self)
@@ -78,63 +112,62 @@ namespace Game.Tests
 
 			public void TestingCheck()
 			{
-				this.NewCheck();
+				this.Check();
 			}
 
-			protected override ShaftAttack NewGetShaftAttack(IActionInfo actionInfo)
+			protected override ShaftAttack GetShaftAttack(IActionInfo actionInfo)
 			{
-				return this.shaftAttack;
+				return this.ShaftAttack;
 			}
 
-			protected override Collider NewGetComponentCollider()
+			protected override Collider GetComponentCollider()
 			{
 				return null;
 			}
 
-			protected override IActionInfo NewGetComponentActionInfo(ILikeGameObject parent)
+			protected override IActionInfo GetSelfActionInfo()
 			{
-				return this.actionInfo;
+				return (this.Self as FakeAttackBoxGameObject).ActionInfo;
 			}
 
-			protected override IActionManager NewGetComponentActionManager(ILikeGameObject rObjTarget)
+			protected override IActionManager GetSelfActionManager()
 			{
-				return this.actionManager;
+				return (this.Self as FakeAttackBoxGameObject).ActionManager;
 			}
 
-			protected override IActionState NewGetComponentActionStage(ILikeGameObject parent)
+			protected override IActionManager GetTargetActionManager(ILikeGameObject obj)
 			{
-				return this.actionState;
+				return (obj as FakeAttackBoxGameObject).ActionManager;
+			}
+			
+			protected override IActionState GetSelfActionState()
+			{
+				return (this.Self as FakeAttackBoxGameObject).ActionState;
 			}
 		}
 
 		internal class TestingActor : IActor
 		{
-			#region Implementation of IActor
-
 			public bool IsEnemy(IActor newActor)
 			{
 				return true;
 			}
 
-			#region Implementation of IActor
-
 			public string TypeName { get; set; }
-
-			#endregion
-
-			#endregion
 		}
 
 		private TestingAttackBoxImpl testTar;
-		FakeLikeGameObject self;
-		FakeLikeGameObject other;
+		FakeAttackBoxGameObject self;
+		FakeAttackBoxGameObject other;
 
 		[TestInitialize]
 		public void SetUp()
 		{
-			this.self = new FakeLikeGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
-			this.other = new FakeLikeGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
+			this.self = new FakeAttackBoxGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
+			this.other = new FakeAttackBoxGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
 			this.testTar = new TestingAttackBoxImpl(this.self);
+
+			this.self.actionManager.NewActor = new TestingActor();
 		}
 
 		[TestCleanup]
@@ -147,15 +180,15 @@ namespace Game.Tests
 		[TestMethod]
 		public void TestCheck()
 		{
-			Assert.AreEqual(null, this.testTar.NewGetAM());
-			Assert.AreEqual(null, this.testTar.NewGetAttack());
+			Assert.AreEqual(null, this.testTar.ActionManager);
+			Assert.AreEqual(null, this.testTar.Attack);
 
-			this.testTar.shaftAttack = new ShaftAttack();
+			this.testTar.ShaftAttack = new ShaftAttack();
 
 			this.testTar.TestingCheck();
 
-			Assert.AreNotEqual(null, this.testTar.NewGetAttack());
-			Assert.AreNotEqual(null, this.testTar.NewGetAM());
+			Assert.AreNotEqual(null, this.testTar.Attack);
+			Assert.AreNotEqual(null, this.testTar.ActionManager);
 		}
 
 		[TestMethod]
@@ -163,39 +196,57 @@ namespace Game.Tests
 		{
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+		}
+
+		[TestMethod]
+		public void TestOnTriggerEnterThrowException()
+		{
+			this.other.tag = "Player";
+			this.testTar.ShaftAttack = new ShaftAttack();
+			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
+			this.other.actionManager.NewActor = new TestingActor();
+			((TestingActor)this.other.actionManager.NewActor).TypeName = "Nonono";
+
+			Assert.AreEqual(0, this.testTar.HitCount);
+			Assert.AreEqual(0, this.testTar.AttackedActorCount);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
+			Assert.AreEqual(0, this.testTar.HitCount);
+			Assert.AreEqual(0, this.testTar.AttackedActorCount);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
 		}
 
 		[TestMethod]
 		public void TestOnTriggerEnterOnce()
 		{
 			this.other.tag = "Player";
-			this.testTar.shaftAttack = new ShaftAttack();
-			this.testTar.shaftAttack.TargetType = AttackTargetType.EnemyActor;
-			this.testTar.actionManager.NewActor = new TestingActor();
-			((TestingActor)this.testTar.actionManager.NewActor).TypeName = "Player";
+			this.testTar.ShaftAttack = new ShaftAttack();
+			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
+			this.other.actionManager.NewActor = new TestingActor();
+			((TestingActor)this.other.actionManager.NewActor).TypeName = "Player";
 
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(true, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
 
-			this.testTar.actionState.IsOnAttackedCalled = false;
-			this.testTar.NewOnTriggerEnter(this.other);
+			this.self.actionState.IsOnAttackedCalled = false;
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
 		}
 
 		[TestMethod]
@@ -203,94 +254,96 @@ namespace Game.Tests
 		{
 			this.other.tag = "Player";
 
-			var other2 = new FakeLikeGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
-			other2.tag = "Player";
-
-			this.testTar.shaftAttack = new ShaftAttack();
-			this.testTar.shaftAttack.TargetType = AttackTargetType.EnemyActor;
-			this.testTar.actionManager.NewActor = new TestingActor();
-			((TestingActor)this.testTar.actionManager.NewActor).TypeName = "Player";
+			this.testTar.ShaftAttack = new ShaftAttack();
+			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
+			this.other.actionManager.NewActor = new TestingActor();
+			((TestingActor)this.other.actionManager.NewActor).TypeName = "Player";
 
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(true, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
 
-			this.testTar.actionState.IsOnAttackedCalled = false;
-			this.testTar.NewOnTriggerEnter(other2);
+			var other2 = new FakeAttackBoxGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
+			other2.tag = "Player";
+			other2.actionManager.NewActor = new TestingActor();
+			((TestingActor)other2.actionManager.NewActor).TypeName = "Player";
+
+			this.self.actionState.IsOnAttackedCalled = false;
+			this.testTar.OnTriggerEnter(other2);
 			Assert.AreEqual(2, this.testTar.HitCount);
 			Assert.AreEqual(2, this.testTar.AttackedActorCount);
-			Assert.AreEqual(true, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.actionState.IsOnAttackedCalled = false;
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
+			this.self.actionState.IsOnAttackedCalled = false;
+			this.testTar.OnTriggerEnter(other2);
 			Assert.AreEqual(2, this.testTar.HitCount);
 			Assert.AreEqual(2, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
 		}
 
 		[TestMethod]
 		public void TestOnTriggerEnterClear()
 		{
 			this.other.tag = "Player";
-			this.testTar.shaftAttack = new ShaftAttack();
-			this.testTar.shaftAttack.TargetType = AttackTargetType.EnemyActor;
-			this.testTar.actionManager.NewActor = new TestingActor();
-			((TestingActor)this.testTar.actionManager.NewActor).TypeName = "Player";
+			this.testTar.ShaftAttack = new ShaftAttack();
+			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
+			this.other.actionManager.NewActor = new TestingActor();
+			((TestingActor)this.other.actionManager.NewActor).TypeName = "Player";
 
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(true, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
 
-			this.testTar.actionState.IsOnAttackedCalled = false;
-			this.testTar.NewClear();
+			this.self.actionState.IsOnAttackedCalled = false;
+			this.testTar.Clear();
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
 
-			this.testTar.NewOnTriggerEnter(this.other);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(true, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
 
-			this.testTar.actionState.IsOnAttackedCalled = false;
-			this.testTar.NewOnTriggerEnter(this.other);
+			this.self.actionState.IsOnAttackedCalled = false;
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
 		}
 
 		[TestMethod]
 		public void TestOnTriggerEnterBullet()
 		{
 			this.other.tag = "Player";
-			this.testTar.shaftAttack = new ShaftAttack();
-			this.testTar.shaftAttack.TargetType = AttackTargetType.EnemyBullet;
-			this.testTar.actionManager.NewActor = new TestingActor();
-			((TestingActor)this.testTar.actionManager.NewActor).TypeName = "Bullet";
+			this.testTar.ShaftAttack = new ShaftAttack();
+			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyBullet;
+			this.other.actionManager.NewActor = new TestingActor();
+			((TestingActor)this.other.actionManager.NewActor).TypeName = "Bullet";
 
 			Assert.AreEqual(0, this.testTar.HitCount);
 			Assert.AreEqual(0, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(true, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
 
-			this.testTar.actionState.IsOnAttackedCalled = false;
-			this.testTar.NewOnTriggerEnter(this.other);
+			this.self.actionState.IsOnAttackedCalled = false;
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
-			this.testTar.NewOnTriggerEnter(this.other);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
+			this.testTar.OnTriggerEnter(this.other);
 			Assert.AreEqual(1, this.testTar.HitCount);
 			Assert.AreEqual(1, this.testTar.AttackedActorCount);
-			Assert.AreEqual(false, this.testTar.actionState.IsOnAttackedCalled);
+			Assert.AreEqual(false, this.self.actionState.IsOnAttackedCalled);
 		}
 
 	}
