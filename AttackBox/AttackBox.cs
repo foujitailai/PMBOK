@@ -5,6 +5,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
 
+public interface ILikeGameObject : IEquatable<ILikeGameObject>
+{
+	GameObject GO { get; }
+
+	Collider collider { get; }
+
+	ILikeGameObject parent { get; }
+
+	string tag { get; }
+}
+
 namespace Fighting
 {
 
@@ -30,20 +41,16 @@ namespace Fighting
 	{
 		void OnAttacked(Collider attackBox, Collider other, ShaftAttack rAttack);
 	}
+
+	public interface IFightingGameObject
+	{
+		IActionState ActionState { get; }
+		IActionInfo ActionInfo { get; }
+		IActionManager ActionManager { get; }
+	}
 }
 
-public interface ILikeGameObject : IEquatable<ILikeGameObject>
-{
-	GameObject GO { get; }
-
-	Collider collider { get; }
-
-	ILikeGameObject parent { get; }
-
-	string tag { get; }
-}
-
-public class LikeGameObjectImpl : ILikeGameObject
+public class LikeGameObjectImpl : ILikeGameObject, IFightingGameObject
 {
 	public GameObject GO { get { return this.go; } }
 	public Collider collider { get { return this.go.GetComponent<Collider>(); } }
@@ -58,100 +65,113 @@ public class LikeGameObjectImpl : ILikeGameObject
 
 	public bool Equals(ILikeGameObject other)
 	{
-		return this.GO == other.GO;
+		return other != null && this.GO == other.GO;
 	}
+
+	public IActionState ActionState { get { return this.go.GetComponent<ActionState>(); } }
+
+	public IActionInfo ActionInfo { get { return this.go.GetComponent<ActionInfo>(); } }
+
+	public IActionManager ActionManager { get { return this.go.GetComponent<ActionManager>(); } }
 }
 
 public class AttackBoxImpl
 {
-	private IActionManager _AM = null;
+	private IActionManager actionManager;
 
-	private ShaftAttack _attack = null;
+	private ShaftAttack attack;
 
-	private int _hitCount = 0;
+	private int hitCount;
 
-	private Dict<ILikeGameObject, bool> attackedActor = new Dict<ILikeGameObject, bool>();
+	private readonly Dict<ILikeGameObject, bool> attackedActor;
 
-	protected ILikeGameObject self;
+	protected ILikeGameObject Self;
 
-	public int HitCount { get { return this._hitCount; } }
+	public int HitCount { get { return this.hitCount; } }
 
 	public int AttackedActorCount { get { return this.attackedActor.Count; } }
 
 	public AttackBoxImpl(ILikeGameObject self)
 	{
-		this.self = self;
+		this.Self = self;
+		this.attackedActor = new Dict<ILikeGameObject, bool>();
 	}
 
-	public IActionManager NewGetAM()
+	public IActionManager ActionManager
 	{
-		return this._AM;
-	}
-
-	public ShaftAttack NewGetAttack()
-	{
-		return this._attack;
-	}
-
-	public void NewClear()
-	{
-		this.attackedActor.Clear();
-		this._hitCount = 0;
-	}
-
-	public void NewSimulateTriggerEnter(ILikeGameObject other)
-	{
-		if (other != null)
-		//if (other)
+		get
 		{
-			this.NewOnTriggerEnter(other);
+			return this.actionManager;
 		}
 	}
 
-	private bool NewIsTarget(ILikeGameObject rObjTarget)
+	public ShaftAttack Attack
 	{
-		IActionManager rTargetAM = this.NewGetComponentActionManager(rObjTarget);
-		if (rTargetAM == null || rTargetAM.NewActor == null)
+		get
+		{
+			return this.attack;
+		}
+	}
+
+	public void Clear()
+	{
+		this.attackedActor.Clear();
+		this.hitCount = 0;
+	}
+
+	private ILikeGameObject GetPlayerGameObj()
+	{
+		return (this.Self.parent != null) ? this.Self.parent.parent : null;
+	}
+
+	private ILikeGameObject GetActionGameObj()
+	{
+		return this.Self.parent;
+	}
+
+	private bool IsTarget(ILikeGameObject targetGameObj)
+	{
+		IActionManager targetActionManager = this.GetTargetActionManager(targetGameObj);
+
+		if (targetActionManager == null || targetActionManager.NewActor == null || 
+			this.GetPlayerGameObj() == null)
 		{
 			return false;
 		}
 
 		// 无敌？
-		if (rTargetAM.Invincible)
+		if (targetActionManager.Invincible)
 		{
 			return false;
 		}
 
-		// 自己的Avatar  GameObject
-		if (this.NewGetParent() == null || this.NewGetParent().parent == null)
-		{
-			return false;
-		}
-		bool isSelf = rObjTarget == this.NewGetParent().parent;
+		bool isSelf = (targetActionManager == this.ActionManager);
 
-		bool isActor = false;
-		switch (rTargetAM.NewActor.TypeName)
+		bool isActor;
+		try{ isActor = this.IsActor(targetActionManager); } catch (Exception e){return false;}
+
+		bool isEnemy = this.actionManager.NewActor.IsEnemy(targetActionManager.NewActor);
+
+		// 当目标是什么的时候，检查对应的标记条件是否满足；如果有多个目标时，会一个个检查过来
+		return this.IsTargetByAttackTargetType(this.attack.TargetType, isEnemy, isSelf, isActor);
+	}
+
+	private bool IsActor(IActionManager targetActionManager)
+	{
+		switch (targetActionManager.NewActor.TypeName)
 		{
 			case "Npc":
 			case "Player":
 			case "AllowDestroyObj":
-				isActor = true;
-				break;
+				return true;
 			case "Bullet":
-				isActor = false;
-				break;
-			default:
 				return false;
+			default:
+				throw new Exception();
 		}
-
-		bool isEnemy = this._AM.NewActor.IsEnemy(rTargetAM.NewActor);
-		var tt = this._attack.TargetType;
-
-		// 当目标是什么的时候，检查对应的标记条件是否满足；如果有多个目标时，会一个个检查过来
-		return IsTargetByAttackTargetType(tt, isEnemy, isSelf, isActor);
 	}
 
-	public static bool IsTargetByAttackTargetType(AttackTargetType tt, bool isEnemy, bool isSelf, bool isActor)
+	private bool IsTargetByAttackTargetType(AttackTargetType tt, bool isEnemy, bool isSelf, bool isActor)
 	{
 		return ((((tt & AttackTargetType.EnemyActor) != 0) && (isEnemy == true && isSelf == false && isActor == true))
 			 || (((tt & AttackTargetType.EnemyBullet) != 0) && (isEnemy == true && isSelf == false && isActor == false))
@@ -161,83 +181,105 @@ public class AttackBoxImpl
 			 || (((tt & AttackTargetType.TeammateBullet) != 0) && (isEnemy == false && isSelf == false && isActor == false)));
 	}
 
-	public void NewOnEnable()
+	public void OnEnable()
 	{
-		this.NewCheck();
+		this.Check();
 	}
 
-	public void NewOnDisable()
+	public void OnDisable()
 	{
-		this._attack = null;
-		this._AM = null;
+		this.attack = null;
+		this.actionManager = null;
 	}
 
-	protected void NewCheck()
+	protected void Check()
 	{
-		if (this.NewGetParent() != null)
+		if (this.GetActionGameObj() != null)
 		{
-			if (this._attack == null)
+			if (this.attack == null)
 			{
-				IActionInfo rActionInfo = this.NewGetComponentActionInfo(this.NewGetParent());
+				IActionInfo actionInfo = this.GetSelfActionInfo();
 				
-				if (rActionInfo != null)
+				if (actionInfo != null)
 				{
-					this._attack = this.NewGetShaftAttack(rActionInfo);
+					this.attack = this.GetShaftAttack(actionInfo);
 				}
 			}
 
-			if (this._AM == null)
+			if (this.actionManager == null)
 			{
-				if (this.NewGetParent().parent != null)
+				if (this.GetPlayerGameObj() != null)
 				{
-					this._AM = this.NewGetComponentActionManager(this.NewGetParent().parent);
+					this.actionManager = this.GetSelfActionManager();
 				}
 			}
 		}
 	}
 
-	public void NewOnTriggerEnter(ILikeGameObject other)
+	public void OnTriggerEnter(ILikeGameObject targetGameObj)
 	{
-		this.NewCheck();
-
-		// GDebug.Log("AttackBox.OnTriggerEnter:" + collider.ToString() + "<=>" + other.transform.GetPath() + " + " + other.ToString());
-		// 打到的是角色
-		if (other.tag == "Player") // 攻击配置项
+		if (targetGameObj == null)
+		//if (!targetGameObj)
 		{
-			this.HitPlayer(other);
+			return;
+		}
+
+		this.Check();
+
+		// GDebug.Log("AttackBox.OnTriggerEnter:" + collider.ToString() + "<=>" + targetGameObj.transform.GetPath() + " + " + targetGameObj.ToString());
+		// 打到的是角色
+		if (targetGameObj.tag == "Player") // 攻击配置项
+		{
+			this.HitPlayer(targetGameObj);
 		}
 
 #if BULLET_THROUGH_WALL
 		// 穿墙
-		else if (other.tag == "Wall")
+		else if (targetGameObj.tag == "Wall")
 		{
 			this.HitWall();
 		}
 #endif
 	}
 
-	private void HitPlayer(ILikeGameObject other)
+	private void HitPlayer(ILikeGameObject targetGameObj)
 	{
-		if (this._attack != null && this._AM != null // 可以命中的次数
-		    && (this._attack.MaxHitCount == -1 || this._attack.MaxHitCount > this._hitCount) // 没有击中过
-		    && !this.attackedActor.ContainsKey(other) // 是否为有效打击目标
-		    && this.NewIsTarget(other))
+		if (this.CanAttack(targetGameObj) && this.IsTarget(targetGameObj))
 		{
-			IActionState actionState = this.NewGetComponentActionStage(this.NewGetParent().parent);
+			IActionState actionState = this.GetSelfActionState();
 			if (actionState != null)
 			{
-				this._hitCount++;
-				this.attackedActor.Add(other, true);
-				actionState.OnAttacked(this.NewGetComponentCollider(), other.collider, this._attack);
+				this.hitCount++;
+				this.attackedActor.Add(targetGameObj, true);
+
+				// 最重要的输出点
+				actionState.OnAttacked(this.GetComponentCollider(), targetGameObj.collider, this.attack);
 			}
 		}
 	}
 
+	private bool CanAttack(ILikeGameObject targetGameObj)
+	{
+		if (this.attack != null && this.actionManager != null)
+		{
+			// 攻击盒子可以命中的次数
+			if (this.attack.MaxHitCount == -1 || this.attack.MaxHitCount > this.hitCount)
+			{
+				// 没有击中过这个对象
+				if (!this.attackedActor.ContainsKey(targetGameObj))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private void HitWall()
 	{
-		if (this._AM != null)
+		if (this.actionManager != null)
 		{
-			var bullet = this._AM.NewActor as Bullet;
+			var bullet = this.actionManager.NewActor as Bullet;
 			if (bullet != null)
 			{
 				// 子弹?
@@ -246,34 +288,49 @@ public class AttackBoxImpl
 		}
 	}
 
-	protected virtual ShaftAttack NewGetShaftAttack(IActionInfo rActionInfo)
+	protected virtual ShaftAttack GetShaftAttack(IActionInfo actionInfo)
 	{
-		return rActionInfo.GetShaftByGO(this.NewGetComponentCollider().gameObject) as ShaftAttack;
+		return actionInfo.GetShaftByGO(this.GetComponentCollider().gameObject) as ShaftAttack;
 	}
 
-	protected virtual Collider NewGetComponentCollider()
+	protected virtual Collider GetComponentCollider()
 	{
-		return this.self.GO.GetComponent<Collider>();
+		return this.Self.GO.GetComponent<Collider>();
 	}
 
-	protected virtual ILikeGameObject NewGetParent()
+	protected virtual IActionManager GetSelfActionManager()
 	{
-		return this.self.parent;
+		return this.GetComponentActionManager(this.GetPlayerGameObj());
 	}
 
-	protected virtual IActionInfo NewGetComponentActionInfo(ILikeGameObject parent)
+	protected virtual IActionManager GetTargetActionManager(ILikeGameObject obj)
 	{
-		return parent.GO.GetComponent<ActionInfo>();
+		return this.GetComponentActionManager(obj);
 	}
 
-	protected virtual IActionManager NewGetComponentActionManager(ILikeGameObject rObjTarget)
+	protected virtual IActionInfo GetSelfActionInfo()
 	{
-		return rObjTarget.GO.GetComponent<ActionManager>();
+		return this.GetComponentActionInfo(this.GetActionGameObj());
 	}
 
-	protected virtual IActionState NewGetComponentActionStage(ILikeGameObject parent)
+	protected virtual IActionState GetSelfActionState()
 	{
-		return parent.GO.GetComponent<ActionState>();
+		return this.GetComponentActionState(this.GetPlayerGameObj());
+	}
+
+	private IActionInfo GetComponentActionInfo(ILikeGameObject obj)
+	{
+		return (obj as IFightingGameObject).ActionInfo;
+	}
+
+	private IActionManager GetComponentActionManager(ILikeGameObject obj)
+	{
+		return (obj as IFightingGameObject).ActionManager;
+	}
+
+	private IActionState GetComponentActionState(ILikeGameObject obj)
+	{
+		return (obj as IFightingGameObject).ActionState;
 	}
 }
 
@@ -287,7 +344,7 @@ public class AttackBox : MonoBehaviour
 	{
 		get
 		{
-			return this.impl.NewGetAM() as ActionManager;
+			return this.impl.ActionManager as ActionManager;
 		}
 	}
 
@@ -303,12 +360,12 @@ public class AttackBox : MonoBehaviour
 
 	public void Clear()
 	{
-		this.impl.NewClear();
+		this.impl.Clear();
 	}
 
 	public void SimulateTriggerEnter(Collider other)
 	{
-		this.impl.NewSimulateTriggerEnter(new LikeGameObjectImpl(other.gameObject));
+		this.impl.OnTriggerEnter(new LikeGameObjectImpl(other.gameObject));
 	}
 
 	#endregion
@@ -322,17 +379,17 @@ public class AttackBox : MonoBehaviour
 
 	private void OnEnable()
 	{
-		this.impl.NewOnEnable();
+		this.impl.OnEnable();
 	}
 
 	private void OnDisable()
 	{
-		this.impl.NewOnDisable();
+		this.impl.OnDisable();
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		this.impl.NewOnTriggerEnter(new LikeGameObjectImpl(other.gameObject));
+		this.impl.OnTriggerEnter(new LikeGameObjectImpl(other.gameObject));
 	}
 
 	#endregion
