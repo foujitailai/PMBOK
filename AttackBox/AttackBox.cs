@@ -14,6 +14,8 @@ public interface ILikeGameObject : IEquatable<ILikeGameObject>
 	ILikeGameObject parent { get; }
 
 	string tag { get; }
+
+	bool IsValid { get; }
 }
 
 namespace Fighting
@@ -52,12 +54,47 @@ namespace Fighting
 
 public class LikeGameObjectImpl : ILikeGameObject, IFightingGameObject
 {
-	public GameObject GO { get { return this.go; } }
-	public Collider collider { get { return this.go.GetComponent<Collider>(); } }
-	public ILikeGameObject parent { get { return new LikeGameObjectImpl(this.go.transform.parent.gameObject); } }
-	public string tag { get { return this.go.tag; } }
+	public GameObject GO
+	{
+		get
+		{
+			return this.go;
+		}
+	}
+
+	public Collider collider
+	{
+		get
+		{
+			return this.go.GetComponent<Collider>();
+		}
+	}
+
+	public ILikeGameObject parent
+	{
+		get
+		{
+			try
+			{
+				return new LikeGameObjectImpl(this.go.transform.parent.gameObject);
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+		}
+	}
+
+	public string tag
+	{
+		get
+		{
+			return this.go.tag;
+		}
+	}
 
 	private GameObject go;
+
 	public LikeGameObjectImpl(GameObject go)
 	{
 		this.go = go;
@@ -68,12 +105,39 @@ public class LikeGameObjectImpl : ILikeGameObject, IFightingGameObject
 		return other != null && this.GO == other.GO;
 	}
 
-	public IActionState ActionState { get { return this.go.GetComponent<ActionState>(); } }
+	public IActionState ActionState
+	{
+		get
+		{
+			return this.go.GetComponent<ActionState>();
+		}
+	}
 
-	public IActionInfo ActionInfo { get { return this.go.GetComponent<ActionInfo>(); } }
+	public IActionInfo ActionInfo
+	{
+		get
+		{
+			return this.go.GetComponent<ActionInfo>();
+		}
+	}
 
-	public IActionManager ActionManager { get { return this.go.GetComponent<ActionManager>(); } }
+	public IActionManager ActionManager
+	{
+		get
+		{
+			return this.go.GetComponent<ActionManager>();
+		}
+	}
+
+	public bool IsValid
+	{
+		get
+		{
+			return this.go;
+		}
+	}
 }
+
 
 public class AttackBoxImpl
 {
@@ -111,6 +175,17 @@ public class AttackBoxImpl
 		{
 			return this.attack;
 		}
+	}
+
+	public void OnEnable()
+	{
+		this.Check();
+	}
+
+	public void OnDisable()
+	{
+		this.attack = null;
+		this.actionManager = null;
 	}
 
 	public void Clear()
@@ -179,17 +254,6 @@ public class AttackBoxImpl
 			 || (((tt & AttackTargetType.SelfBullet) != 0) && (isEnemy == false && isSelf == true && isActor == false))
 			 || (((tt & AttackTargetType.TeammateActor) != 0) && (isEnemy == false && isSelf == false && isActor == true))
 			 || (((tt & AttackTargetType.TeammateBullet) != 0) && (isEnemy == false && isSelf == false && isActor == false)));
-	}
-
-	public void OnEnable()
-	{
-		this.Check();
-	}
-
-	public void OnDisable()
-	{
-		this.attack = null;
-		this.actionManager = null;
 	}
 
 	protected void Check()

@@ -29,12 +29,17 @@ namespace Game.Tests
 
 			public bool Equals(ILikeGameObject other)
 			{
-				return this.GO == other.GO;
+				return this == other;
 			}
 
 			public Collider collider { get; set; }
 
 			public string tag { get; set; }
+
+			public bool IsValid { get
+			{
+				return true;
+			} }
 
 		}
 
