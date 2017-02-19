@@ -41,6 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\AttackBox\changelog.txt">
+      <Link>changelog.txt</Link>
+    </None>
+    <None Include="..\AttackBox\structure.txt">
+      <Link>structure.txt</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
