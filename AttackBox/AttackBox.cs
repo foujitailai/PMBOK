@@ -47,6 +47,14 @@ public abstract class ILikeGameObject : IEquatable<ILikeGameObject>
 
  		return l.GO != r.GO;
  	}
+
+	public override int GetHashCode()
+	{
+		// 确保空值时都返回0,表示都相等; 非空值时,直接使用GO的HashCode
+		return (this.GO == null) ? 0 : this.GO.GetHashCode();
+		// 匿名类型(anonymous type, 它应该是class, http://www.bubuko.com/infodetail-1027631.html)产生一个HashCode
+		//return new { this.GO }.GetHashCode();
+	}
 }
 
 namespace Fighting
