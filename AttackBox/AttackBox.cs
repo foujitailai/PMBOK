@@ -19,23 +19,34 @@ public abstract class ILikeGameObject : IEquatable<ILikeGameObject>
 
 	public virtual bool Equals(ILikeGameObject other)
 	{
-		return other != null && this.GO == other.GO;
+		if (object.ReferenceEquals(other, null)) return false;
+		if (object.ReferenceEquals(this, other)) return true;
+
+		return this.GO == other.GO;
 	}
 
 	public static implicit operator bool(ILikeGameObject exists)
 	{
-		return exists != null && exists.GO;
+		if (object.ReferenceEquals(exists, null)) return false;
+
+		return exists.GO;
 	}
 
-// 	public static bool operator ==(ILikeGameObject l, ILikeGameObject r)
-// 	{
-// 		return l.Equals(r);
-// 	}
-// 
-// 	public static bool operator !=(ILikeGameObject l, ILikeGameObject r)
-// 	{
-// 		return !l.Equals(r);
-// 	}
+ 	public static bool operator ==(ILikeGameObject l, ILikeGameObject r)
+ 	{
+		if (object.ReferenceEquals(l, r)) return true;
+		if (object.ReferenceEquals(l, null) || object.ReferenceEquals(r, null)) return false;
+
+ 		return l.GO == r.GO;
+ 	}
+
+ 	public static bool operator !=(ILikeGameObject l, ILikeGameObject r)
+ 	{
+		if (object.ReferenceEquals(l, r)) return false;
+		if (object.ReferenceEquals(l, null) || object.ReferenceEquals(r, null)) return true;
+
+ 		return l.GO != r.GO;
+ 	}
 }
 
 namespace Fighting
