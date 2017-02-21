@@ -14,29 +14,37 @@ namespace Game.Tests
 	{
 		public class FakeLikeGameObject : ILikeGameObject
 		{
-			public GameObject GO { get { return null; } }
-			public ILikeGameObject parent { get
+			public override GameObject GO { get { return null; } }
+			public override ILikeGameObject parent { get
 			{
 				return this._parent;
 			}
 			}
 
 			private readonly ILikeGameObject _parent;
+
+			public string _tag;
+
+			private Collider _collider;
+
 			public FakeLikeGameObject(ILikeGameObject parent)
 			{
 				this._parent = parent;
 			}
 
-			public bool Equals(ILikeGameObject other)
+			public override Collider collider { get
 			{
-				return this == other;
-			}
+				return this._collider;
+			} }
 
-			public Collider collider { get; set; }
+			public override string tag { get
+			{
+				return this._tag;
+			} }
 
-			public string tag { get; set; }
-
-			public bool IsValid { get
+			public override bool IsValid
+			{
+				get
 			{
 				return true;
 			} }
@@ -45,7 +53,7 @@ namespace Game.Tests
 
 		public class FakeActionInfo : IActionInfo
 		{
-			public ShaftBase GetShaftByGO(GameObject myGo)
+			public ShaftBase GetShaft(GameObject myGo)
 			{
 				return null;
 			}
@@ -211,7 +219,7 @@ namespace Game.Tests
 		[TestMethod]
 		public void TestOnTriggerEnterThrowException()
 		{
-			this.other.tag = "Player";
+			this.other._tag = "Player";
 			this.testTar.ShaftAttack = new ShaftAttack();
 			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
 			this.other.actionManager.NewActor = new TestingActor();
@@ -229,7 +237,7 @@ namespace Game.Tests
 		[TestMethod]
 		public void TestOnTriggerEnterOnce()
 		{
-			this.other.tag = "Player";
+			this.other._tag = "Player";
 			this.testTar.ShaftAttack = new ShaftAttack();
 			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
 			this.other.actionManager.NewActor = new TestingActor();
@@ -257,7 +265,7 @@ namespace Game.Tests
 		[TestMethod]
 		public void TestOnTriggerEnterTwice()
 		{
-			this.other.tag = "Player";
+			this.other._tag = "Player";
 
 			this.testTar.ShaftAttack = new ShaftAttack();
 			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
@@ -273,7 +281,7 @@ namespace Game.Tests
 			Assert.AreEqual(true, this.self.actionState.IsOnAttackedCalled);
 
 			var other2 = new FakeAttackBoxGameObject(new FakeLikeGameObject(new FakeLikeGameObject(null)));
-			other2.tag = "Player";
+			other2._tag = "Player";
 			other2.actionManager.NewActor = new TestingActor();
 			((TestingActor)other2.actionManager.NewActor).TypeName = "Player";
 
@@ -292,7 +300,7 @@ namespace Game.Tests
 		[TestMethod]
 		public void TestOnTriggerEnterClear()
 		{
-			this.other.tag = "Player";
+			this.other._tag = "Player";
 			this.testTar.ShaftAttack = new ShaftAttack();
 			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyActor;
 			this.other.actionManager.NewActor = new TestingActor();
@@ -326,7 +334,7 @@ namespace Game.Tests
 		[TestMethod]
 		public void TestOnTriggerEnterBullet()
 		{
-			this.other.tag = "Player";
+			this.other._tag = "Player";
 			this.testTar.ShaftAttack = new ShaftAttack();
 			this.testTar.ShaftAttack.TargetType = AttackTargetType.EnemyBullet;
 			this.other.actionManager.NewActor = new TestingActor();
