@@ -152,6 +152,43 @@ namespace Game.Tests
 
 		}
 
+		public class TestingLikeGameObject : ILikeGameObject
+		{
+			public override Collider collider
+			{
+				get
+				{
+					return null;
+				}
+			}
+
+			public override GameObject GO { get { return null; } }
+
+			public override bool IsValid
+			{
+				get
+				{
+					return true;
+				}
+			}
+
+			public override ILikeGameObject parent
+			{
+				get
+				{
+					return null;
+				}
+			}
+
+			public override string tag
+			{
+				get
+				{
+					return null;
+				}
+			}
+		}
+
 		[TestMethod]
 		public void TestGameObjectEqual()
 		{
@@ -161,6 +198,26 @@ namespace Game.Tests
 			Assert.IsTrue(l.Equals(r));
 			// 需要使用l.GO==r.GO,怎么才能实现呢？？？
 			Assert.IsTrue(l == r);
+
+			Assert.IsTrue(l.GetHashCode() == r.GetHashCode());
+
+
+			l = new AttackBoxTest.FakeLikeGameObject(null);
+			r = new AttackBoxTest.FakeLikeGameObject(null);
+
+			Assert.IsFalse(l.Equals(r));
+			Assert.IsFalse(l == r);
+			Assert.IsFalse(l.GetHashCode() == r.GetHashCode());
+
+
+			var fakeGameObject = new FakeGameObject();
+			var fakeLikeObject = new FakeLikeObject(fakeGameObject);
+			fakeLikeObject.Equals(new FakeLikeObject(fakeGameObject));
+			fakeLikeObject.Equals(new FakeLikeObject(new FakeGameObject()));
+
+			var fakeLikeGameObject = new FakeLikeGameObject();
+			var likeGameObjectImpl = new LikeGameObjectImpl();
+
 		}
 
 		[TestMethod]

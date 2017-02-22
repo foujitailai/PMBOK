@@ -5,10 +5,178 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
 
+
+namespace TestObject
+{
+
+	public class GameObject
+	{
+		public static implicit operator bool(GameObject exists)
+		{
+			return !object.ReferenceEquals(exists, null);
+		}
+	}
+
+	public abstract class ILikeObject<T> : IEquatable<ILikeObject<T>> where T : class
+	{
+		public abstract T GO { get; }
+
+		public virtual bool Equals(ILikeObject<T> other)
+		{
+			if (object.ReferenceEquals(other, null)) return false;
+			if (object.ReferenceEquals(this, other)) return true;
+
+			return (EqualityComparer<T>.Default.Equals(this.GO, other.GO));
+			//return this.GO == other.GO;
+		}
+
+		public static implicit operator bool(ILikeObject<T> exists)
+		{
+			if (object.ReferenceEquals(exists, null)) return false;
+
+			return (bool)(object)exists.GO;
+		}
+
+		public static bool operator ==(ILikeObject<T> l, ILikeObject<T> r)
+		{
+			if (object.ReferenceEquals(l, r)) return true;
+			if (object.ReferenceEquals(l, null) || object.ReferenceEquals(r, null)) return false;
+
+			return (EqualityComparer<T>.Default.Equals(l.GO, r.GO));
+		}
+
+		public static bool operator !=(ILikeObject<T> l, ILikeObject<T> r)
+		{
+			if (object.ReferenceEquals(l, r)) return false;
+			if (object.ReferenceEquals(l, null) || object.ReferenceEquals(r, null)) return true;
+
+			return (!EqualityComparer<T>.Default.Equals(l.GO, r.GO));
+		}
+
+		public override int GetHashCode()
+		{
+			// 确保空值时都返回0,表示都相等; 非空值时,直接使用GO的HashCode
+			return object.ReferenceEquals(this.GO, null) ? 0 : this.GO.GetHashCode();
+			// 匿名类型(anonymous type, 它应该是class, http://www.bubuko.com/infodetail-1027631.html)产生一个HashCode
+			//return new { this.GO }.GetHashCode();
+		}
+	}
+
+	public abstract class ILikeGameObject : ILikeObject<GameObject>
+	{
+		public abstract ILikeGameObject parent { get; }
+
+		public abstract string tag { get; }
+
+		public abstract bool IsValid { get; }
+
+	}
+
+	public class FakeLikeGameObject : ILikeGameObject
+	{
+		public override GameObject GO
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public override bool IsValid
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public override ILikeGameObject parent
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public override string tag
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+	}
+
+	public class LikeGameObjectImpl : ILikeGameObject
+	{
+		public override GameObject GO
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public override bool IsValid
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public override ILikeGameObject parent
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public override string tag
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+	}
+
+	public class FakeGameObject
+	{
+		public static implicit operator bool(FakeGameObject exists)
+		{
+			return !object.ReferenceEquals(exists, null);
+		}
+	}
+
+	public class FakeLikeObject : ILikeObject<FakeGameObject>
+	{
+		private FakeGameObject go;
+		public override FakeGameObject GO
+		{
+			get
+			{
+				return this.go;
+			}
+		}
+
+		public FakeLikeObject(FakeGameObject go)
+		{
+			this.go = go;
+		}
+	}
+}
+
+
+
+public abstract class ILikeObject<T>
+{
+	public abstract T GO { get; }
+}
+
 public abstract class ILikeGameObject : IEquatable<ILikeGameObject>
 {
-	public abstract GameObject GO { get; }
-
 	public abstract Collider collider { get; }
 
 	public abstract ILikeGameObject parent { get; }
