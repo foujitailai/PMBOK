@@ -41,14 +41,6 @@ namespace Game.Tests
 			{
 				return this._tag;
 			} }
-
-			public override bool IsValid
-			{
-				get
-			{
-				return true;
-			} }
-
 		}
 
 		public class FakeActionInfo : IActionInfo

@@ -51,8 +51,8 @@ namespace Fighting
 			{
 				// 注意不要使用==号，这里判断的是结构体里面的那个对象
 				// 有没有办法为接口弄==号出来呢？
-				if (v.Value.Equals(myGo))
-				//if (v.Value == myGo)
+				//if (v.Value.Equals(myGo))
+				if (v.Value == myGo)
 				{
 					return v.Key;
 				}
