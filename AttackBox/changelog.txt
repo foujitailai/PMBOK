@@ -229,3 +229,102 @@ AttackBox的重构
 	向下拉
 	独立出一块（派生替换函数）
 	假物代替（接口）
+
+
+
+
+
+---------------
+UNITY的协程实现分析:http://gad.qq.com/article/detail/695
+FrameUpdate()
+{
+	CallbackList
+	foreach(ver v in CallbackList)
+	{
+		if (v.IsWaitConditionFinished)
+		{
+			v.MoveNext = ()=>
+				{
+					// our logic code
+					//...
+					//yield return new WaitForSecond(1.0f);
+					if(yield return)
+					{
+						v.Current = new WaitForSecond(1.0f);
+						return true;
+					}
+					// our logic code
+					//...
+					return false;
+				}
+			if (v.MoveNext)
+			{
+				// yield code
+				//v.Current = new WaitForSecond(1.0f);
+				CallbackList.Push(v.Current)
+			}
+			else
+			{
+				// function finished
+				CallbackList.Remove(v)
+			}
+		}
+	}
+}
+
+C# 中的应用
+static IEnumerator EnumFunc()
+{
+	yield return null;
+	yield return null;
+}
+static void Test()
+{
+	var ef = EnumFunc();
+	while (ef.MoveNext()) { }
+}
+
+协程的单元测试
+What I currently do is testing outside Unity (in Visual Studio). I made myself a small following helper to test finite coroutines: 
+
+Code (csharp):
+ 
+using System;
+using System.Collections;
+ 
+public static class CoroutineHelper
+{
+    public class CoroutineTimeoutException : Exception
+    {
+        public CoroutineTimeoutException() { }
+        public CoroutineTimeoutException(string message) : base(message) { }
+        public CoroutineTimeoutException(string message, Exception inner) : base(message, inner) { }
+    }
+ 
+    public static void RunSynchronously(IEnumerator coroutine, int maxNumberOfCalls = 100)
+    {
+        while (coroutine.MoveNext())
+        {
+            maxNumberOfCalls--;
+            if (maxNumberOfCalls < 0)
+               throw new CoroutineTimeoutException("Coroutine reached maximum number of calls: " + maxNumberOfCalls);
+        }
+    }
+}
+ 
+And you can use them in your unit test this way:
+
+Code (csharp):
+ 
+[Test]
+public void Send_PostRequestFailed_ShouldReturnUnsuccessful()
+{
+    postRequest.ResponseStatusCode.Returns(404u);
+ 
+    CoroutineHelper.RunSynchronously(sut.Send());
+ 
+    Assert.IsTrue(sut.IsFinished);
+    Assert.IsFalse(sut.IsSuccessful);
+}
+ 
+bodziowolf, Nov 3, 2016 #5
