@@ -193,6 +193,25 @@ AttackBox的重构
 			Separating a lot of ControllerShaft from ActionState, ActionState will be thin
 			Separating ASAction from ActionState
 			another work
+		test case
+			init
+				as.InitializeController();
+				Assert.IsTrue(0 < as.mControllerShaft.Count)
+			switch
+				Assert.AreNotEqual(newActionID, as.ActionID)
+				as.SwitchAction(new ActionInfoImpl(), null, want)
+				Assert.AreEqual(want.ActionID, as.ActionID)
+			update
+				as.Update(deltaTime)
+				Assert.AreEqual(deltaTime, as.actionTime)
+				Assert.IsTrue(as.controller[1].isEnable)
+
+			controller
+				init
+				enable
+					Assert.IsTrue(controller.attackbox)
+				disable
+				reset
 
 	ActionManager
 		动作切换的逻辑规则、条件，其它系统的关连
