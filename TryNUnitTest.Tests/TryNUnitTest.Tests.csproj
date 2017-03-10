@@ -29,6 +29,12 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.7.0\lib\net45\Moq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
@@ -44,6 +50,7 @@
     <Compile Include="..\AttackBox\ActionInfoTest.cs">
       <Link>ActionInfoTest.cs</Link>
     </Compile>
+    <Compile Include="TestNextAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
