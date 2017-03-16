@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Game.Tests
 {
@@ -187,10 +188,15 @@ namespace Game.Tests
 
 			}
 
+			public interface testinf
+			{
+			}
+
 			[TestMethod]
 			public void TestFindShaftException()
 			{
 				// 2.异常的参数返回正确结果
+				testinf v = new Mock<testinf>() as testinf;
 			}
 		}
 	}

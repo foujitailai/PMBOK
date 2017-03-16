@@ -42,3 +42,4 @@ TryNUnitTest.Tests/obj/Debug/TryNUnitTest.Tests.dll.mdb
 .DS_Store
 /TryNUnitTest.Tests/bin
 /TryNUnitTest.Tests/obj
+/packages
