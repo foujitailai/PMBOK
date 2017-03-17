@@ -212,6 +212,27 @@ AttackBox的重构
 					Assert.IsTrue(controller.attackbox)
 				disable
 				reset
+		真实处理的时候，还是在那里纠结了一会儿，倒底是从哪里入手好，弄了一下ComMonoBehavior，不行
+			最后一狠心，直接把InitializeController整个函数从ActionState移到ActionStateImpl里面
+				各种编译不过
+					利用编译返回的错误信息，改一条编译一下，半个多小时，处理完
+					通过IActionState把其它类里面需要的参数或函数给暴露出来
+					再由ActionState先继承这个接口，于是就编译过了
+					编译过，使用了Resharper的重构功能，要不然会很慢的
+				经过这一顿处理之后，类开始有点分离开来了
+				继续搬，把一些参数从ActionState放到ActionStateImpl里面来，再让ActionState引用这边的参数
+					这样可以让还在ActionState里面的函数可以正常的引用到这些参数
+					注意！签名要一至，别急着重命名
+		花了将近一周的时候完成了这个类的处理
+			把里面所有的shaftType全转成ControllerBase的类，其中各种坑等着我去踏。
+			转了之后，又觉的CustomShafts把整个逻辑变的好复杂，就做了一个ShaftList来处理这个问题
+				List好做，把List应用到当前的系统里面真是太困难了。
+				在应用的时候，最后直接放弃使用“测试先行”规则了，先把功能搞定再说。
+				在修补这些功能的时候，脑子好累，同时要存着好多的信息，都感觉转不过来了，还是UNIT TEST舒服
+				最后写一点代码，进UNITY测试一下，慢慢的把功能给补上去，经过这一轮之后，还是“测试先行”吧
+				补完之后，开始清理代码，删删删，太爽了
+				把之后的单元测试重新修复成可以使用的状态，一个下午又过去了
+				过程中又清理了一些被遗忘掉的代码
 
 	ActionManager
 		动作切换的逻辑规则、条件，其它系统的关连
@@ -219,6 +240,21 @@ AttackBox的重构
 			一整套切动作相关处理
 			动作系统的更新
 			动作同步协议的处理
+		使用之后做好的ComMonoBehaviour把ActionManager操了一遍，很快编译与new ActionManager()就过了
+		动作切换是它的最核心的功能，所以从SwitchAction函数开始
+			因为以前的经验，看着复杂的SwitchAction函数，直接把整个函数变成一个类先。
+			然后开始让这个类先可以编译通过。
+			再然后就可以对这个进行分割重构了，让一个大函数变成一堆小函数
+			加入测试代码来确保过程的正确性
+			大函数里面不好处理的逻辑，变成小函数后，重新放回到ActionManager里面去，在函数前加EMPORARY_，之后会去将它处理掉，属性也一样。
+		处理NextAction
+			与SwitchAction一样，很快把它给切割成几块小功能了
+			然后，就进行不下去了，又是无法测试，里面与其它的东西关联的比较多，脑子都不想去想了
+				今天尝试把this.actionManager的引用给弄出来，搜索这个文件里面所有使用了this.actionManager.开头的代码
+				复制搜索结果到Notepad++里面，并把文本规格化、排序，看到了当前倒底引用了一些什么外部的东西
+				发现原来主要是与技能相关的比较多
+				那我现在怎么为它编写测试代码呢？
+				写单元测试时，要用测试的角度来编写：准备环境，执行，检查结果
 
 
 	ActorController
